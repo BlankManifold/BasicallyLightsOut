@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/PuzzleManager.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/PuzzleUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/UIs/PuzzleUI.cs" type="Script" id=3]
+[ext_resource path="res://scripts/Managers/MainManager.cs" type="Script" id=4]
+[ext_resource path="res://scenes/OptionsUI.tscn" type="PackedScene" id=5]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 4 )
+
+[node name="OptionsUI" parent="." instance=ExtResource( 5 )]
+
+[node name="PuzzleUI" parent="." instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="MovesLabel" parent="PuzzleUI" index="1"]
+text = "0"
+align = 1
+valign = 1
+
+[node name="PuzzleManager" parent="." instance=ExtResource( 1 )]
+_nullIds = PoolIntArray( 3, 4, 8, 9 )
+
+[connection signal="button_down" from="PuzzleUI/RestartButton" to="." method="_on_RestartButton_button_down"]
+[connection signal="button_down" from="PuzzleUI/OptionsButton" to="." method="_on_OptionsButton_button_down"]
+[connection signal="ChangedMovesCounter" from="PuzzleManager" to="PuzzleUI" method="_on_PuzzleManager_ChangedMovesCounter"]
+
+[editable path="PuzzleUI"]
