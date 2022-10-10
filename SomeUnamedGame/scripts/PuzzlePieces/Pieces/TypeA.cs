@@ -27,6 +27,7 @@ namespace PuzzlePieces
 
             ColorRect _rect = GetNode<ColorRect>("ColorRect");
             _rect.RectSize = 2 * _extents;
+            _rect.RectPosition = - _extents;
         }
         public void _on_Area2D_input_event(Object _, InputEvent @event, int __)
         {

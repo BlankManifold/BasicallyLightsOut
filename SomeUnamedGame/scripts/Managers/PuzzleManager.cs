@@ -4,14 +4,15 @@ using System;
 
 namespace Managers
 {
-    public class PuzzleManager : Node
+    public class PuzzleManager : Node2D
     {
         private SequenceTypeA _sequence;
         private Globals.PiecesType _piecesType = Globals.PiecesType.A;
         private PackedScene _piecesScene;
         private int _targetColorId = 0;
-        private Vector2 _startPosition = new Vector2(200, 200);
+        private Vector2 _startPosition = new Vector2(0,0);
         private Vector2 _pieceExtents = new Vector2(100, 100);
+        private Vector2 _separation = new Vector2(100, 100);
 
 
         private int _movesCounter = 0;
@@ -26,7 +27,7 @@ namespace Managers
 
 
         [Export]
-        private int[] _frameDimension;
+        private Vector2 _frameDimension = new Vector2(0,0);
         [Export]
         private int[] _startConfiguration;
         [Export]
@@ -39,8 +40,10 @@ namespace Managers
 
 
 
-        public void InitSequence(int[] frameDimension, int targetColorId = 0, int[] configuration = null, int[] creationSeq = null, int[] nullIds = null)
+        public void InitSequence(Vector2 frameDimension, int targetColorId = 0, int[] configuration = null, int[] creationSeq = null, int[] nullIds = null)
         {
+            GlobalPosition = Vector2.Zero;
+
             _targetColorId = targetColorId;
             _frameDimension = frameDimension;
 
@@ -52,7 +55,7 @@ namespace Managers
             {
 
                 _startConfiguration = new int[] { };
-                Array.Resize(ref _startConfiguration, _frameDimension[0] * _frameDimension[1]);
+                Array.Resize(ref _startConfiguration, (int)(_frameDimension[0] * _frameDimension[1]));
                 for (int i = 0; i < _startConfiguration.Length; i++)
                 {
                     _startConfiguration[i] = 0;
@@ -68,8 +71,8 @@ namespace Managers
             _sequence.SetStartConfiguration(_startConfiguration);
 
             Vector2 position = _startPosition;
-            Vector2 shiftx = new Vector2(2 * _pieceExtents[0] + 5, 0);
-            Vector2 shifty = new Vector2(0, 2 * _pieceExtents[1] + 5);
+            Vector2 shiftx = new Vector2(2 * _pieceExtents[0] + _separation[0], 0);
+            Vector2 shifty = new Vector2(0, 2 * _pieceExtents[1] + _separation[1]);
 
             int id = 0;
             int colorId = 0;
@@ -90,8 +93,8 @@ namespace Managers
 
                         BasePiece piece = _piecesScene.Instance<BasePiece>();
                         piece.Init(id, colorId, position, _pieceExtents);
-                        AddChild(piece);
-
+                        
+                        _sequence.AddChild(piece);
                         _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
                         _sequence.UpdatePieceDict(id, piece);
                     }
@@ -112,6 +115,11 @@ namespace Managers
         {
             _piecesScene = ResourceLoader.Load<PackedScene>(Globals.Utilities.GetPiecesScenePath(_piecesType));
             _sequence = GetNode<SequenceTypeA>("SequenceTypeA");
+
+            int pieceExtents = Globals.GridInfoManager.GetMaxTypeAExtents(_frameDimension, _separation);
+            _pieceExtents = new Vector2(pieceExtents, pieceExtents);
+            _startPosition = Globals.GridInfoManager.GetStartPosition(_frameDimension, _pieceExtents, _separation);
+
             InitSequence(_frameDimension, _targetColorId, null, _creationSeq, _nullIds);
         }
 
@@ -125,7 +133,7 @@ namespace Managers
 
             if (coords[0] > 0)
             {
-                AddNeighbours(id - _frameDimension[1], neighbours);
+                AddNeighbours(id - (int)_frameDimension[1], neighbours);
             }
 
             if (coords[1] > 0)
@@ -135,7 +143,7 @@ namespace Managers
 
             if (coords[0] < _frameDimension[0] - 1)
             {
-                AddNeighbours(id + _frameDimension[1], neighbours);
+                AddNeighbours(id + (int)_frameDimension[1], neighbours);
             }
 
             if (coords[1] < _frameDimension[1] - 1)

@@ -5,8 +5,8 @@
 
 [node name="PuzzleManager" type="Node2D"]
 script = ExtResource( 1 )
-_frameDimension = PoolIntArray( 4, 4 )
-_creationSeq = PoolIntArray( 1, 12, 5 )
+_frameDimension = Vector2( 3, 3 )
+_creationSeq = PoolIntArray( 1, 8, 5 )
+_nullIds = PoolIntArray(  )
 
 [node name="SequenceTypeA" parent="." instance=ExtResource( 2 )]
-position = Vector2( 212, 300 )
