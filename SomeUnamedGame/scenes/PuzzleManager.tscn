@@ -3,10 +3,9 @@
 [ext_resource path="res://scripts/Managers/PuzzleManager.cs" type="Script" id=1]
 [ext_resource path="res://scenes/SequenceTypeA.tscn" type="PackedScene" id=2]
 
-[node name="PuzzleManager" type="Node2D"]
+[node name="PuzzleManager" type="Node2D" groups=["PuzzleManager"]]
 script = ExtResource( 1 )
-_frameDimension = Vector2( 3, 3 )
-_creationSeq = PoolIntArray( 1, 8, 5 )
-_nullIds = PoolIntArray(  )
+_frameDimension = Vector2( 5, 5 )
+_nullIds = [  ]
 
 [node name="SequenceTypeA" parent="." instance=ExtResource( 2 )]

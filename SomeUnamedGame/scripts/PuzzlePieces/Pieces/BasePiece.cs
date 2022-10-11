@@ -9,6 +9,8 @@ namespace PuzzlePieces
         public bool IsFlipped {get;} = false;
         public int ColorId {get; set;} = 0;
         protected int _id;
+        protected bool _active = true;
+        public bool IsActive {get {return _active;} set {_active = value;}}
 
         [Signal]
         delegate void Flipping(int id, int colorId, bool isSetup = false);

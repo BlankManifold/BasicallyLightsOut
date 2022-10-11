@@ -17,11 +17,11 @@ namespace Globals
             return coords;
         }
 
-        static public int CoordsToId(int[] coords, int[] frameDimensions)
+        static public int CoordsToId(Vector2 coords, Vector2 frameDimensions)
         {
             return (int)(coords[0] * frameDimensions[1] + coords[1]);
         }
-        static public int CoordsToId(int row, int col, int[] frameDimensions)
+        static public int CoordsToId(int row, int col, Vector2 frameDimensions)
         {
             return (int)(row * frameDimensions[1] + col);
         }
@@ -38,6 +38,10 @@ namespace Globals
         static public string GetPuzzleMenagerScenePath()
         {
             return "scenes/PuzzleManager.tscn";
+        }
+        static public string GetPuzzleCreationUIScenePath()
+        {
+            return "scenes/PuzzleCreationUI.tscn";
         }
     }
 

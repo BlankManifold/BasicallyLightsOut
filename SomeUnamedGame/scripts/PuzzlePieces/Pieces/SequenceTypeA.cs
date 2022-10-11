@@ -13,13 +13,16 @@ namespace PuzzlePieces
 
         private Godot.Collections.Dictionary<int, Godot.Collections.Array<int>> _neighboursDict = new Godot.Collections.Dictionary<int, Godot.Collections.Array<int>>() { };
         private Godot.Collections.Dictionary<int, BasePiece> _piecesDict = new Godot.Collections.Dictionary<int, BasePiece>() { };
-        private int[] _currentConfiguration;
+        private Godot.Collections.Array<int> _currentConfiguration;
+        public Godot.Collections.Array<int> CurrentConfiguration { get { return _currentConfiguration; } }
         private int _numberOfSolvedPieces = 0;
 
         [Signal]
         delegate void Solved();
         [Signal]
         delegate void Moved();
+        [Signal]
+        delegate void AddPiece(int id);
 
 
 
@@ -28,6 +31,7 @@ namespace PuzzlePieces
             Managers.PuzzleManager puzzleManager = GetParent<Managers.PuzzleManager>();
             Connect(nameof(Solved), puzzleManager, "_on_SequenceTypeA_Solved");
             Connect(nameof(Moved), puzzleManager, "_on_SequenceTypeA_Moved");
+            Connect(nameof(AddPiece), puzzleManager, "_on_SequenceTypeA_AddPiece");
         }
 
 
@@ -54,28 +58,74 @@ namespace PuzzlePieces
         {
             _numberOfPieces = numberOfPieces;
         }
-        public void SetStartConfiguration(int[] startConfiguration)
+        public void SetStartConfiguration(Godot.Collections.Array<int> startConfiguration)
         {
-            _currentConfiguration = (int[])startConfiguration.Clone();
+            _currentConfiguration = (Godot.Collections.Array<int>)startConfiguration.Duplicate();
         }
-        public void CreateFromCreationSequence(int[] creationSeq, ref int[] startConfiguration)
+        public void CreateFromCreationSequence(Godot.Collections.Array<int> scramble, ref Godot.Collections.Array<int> startConfiguration)
         {
-            foreach (int id in creationSeq)
+            foreach (int id in scramble)
             {
                 _piecesDict[id].Flip(true);
             }
 
-            startConfiguration = (int[])_currentConfiguration.Clone();
+            startConfiguration = (Godot.Collections.Array<int>)_currentConfiguration.Duplicate();
         }
+        public void ClearAll()
+        {
+            foreach (Node piece in GetChildren())
+            {
+                piece.QueueFree();
+            }
 
+            _neighboursDict.Clear();
+            _piecesDict.Clear();
+            _numberOfSolvedPieces = 0;
+            _numberOfPieces = 0;
+        }
+        public bool ModifyPiece(int id)
+        {
+            if (_piecesDict.ContainsKey(id))
+            {
+                BasePiece piece = _piecesDict[id];
+
+                float alpha = 0f;
+                if (!piece.IsActive)
+                    alpha = 1f;
+
+                _piecesDict[id].Modulate = new Color(0f, 0f, 0f, alpha);
+                piece.IsActive = !piece.IsActive;
+
+                return piece.IsActive;
+            }
+            else
+            {
+                EmitSignal(nameof(AddPiece),id);
+                return true;
+            }
+
+        }
+        public Godot.Collections.Array<int> CreateNullIds()
+        {
+            Godot.Collections.Array<int> nullIds = new Godot.Collections.Array<int>() { };
+            foreach (int keys in _piecesDict.Keys)
+            {
+                if (!_piecesDict[keys].IsActive)
+                {
+                    nullIds.Add(keys);
+                }
+            }
+
+            return nullIds;
+        }
         private bool IsSolved()
         {
             return _numberOfPieces == _numberOfSolvedPieces;
         }
-        public void Restart(int[] startConfiguration)
+        public void Restart(Godot.Collections.Array<int> startConfiguration)
         {
             _numberOfSolvedPieces = 0;
-            _currentConfiguration = (int[])startConfiguration.Clone();;
+            _currentConfiguration = (Godot.Collections.Array<int>)startConfiguration.Duplicate();
             foreach (int id in _piecesDict.Keys)
             {
                 _piecesDict[id].SetColor(startConfiguration[id]);
@@ -97,7 +147,7 @@ namespace PuzzlePieces
 
             if (!isSetup)
                 EmitSignal(nameof(Moved));
-            
+
             if (IsSolved())
                 EmitSignal(nameof(Solved));
         }

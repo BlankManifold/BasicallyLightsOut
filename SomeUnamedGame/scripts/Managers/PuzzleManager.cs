@@ -10,37 +10,46 @@ namespace Managers
         private Globals.PiecesType _piecesType = Globals.PiecesType.A;
         private PackedScene _piecesScene;
         private int _targetColorId = 0;
-        private Vector2 _startPosition = new Vector2(0,0);
+        private Vector2 _startPosition = new Vector2(0, 0);
+        public Vector2 StartPosition { get { return _startPosition; } }
         private Vector2 _pieceExtents = new Vector2(100, 100);
-        private Vector2 _separation = new Vector2(100, 100);
+        private Vector2 _separation = new Vector2(1, 1);
 
 
         private int _movesCounter = 0;
         public int MovesCounter
         {
-            get {return _movesCounter;}
-            set {
+            get { return _movesCounter; }
+            set
+            {
                 _movesCounter = value;
-                EmitSignal(nameof(ChangedMovesCounter),_movesCounter);
-                }
+                EmitSignal(nameof(ChangedMovesCounter), _movesCounter);
+            }
         }
 
 
         [Export]
-        private Vector2 _frameDimension = new Vector2(0,0);
+        private Vector2 _frameDimension = new Vector2(0, 0);
+        public Vector2 FrameDimension { get { return _frameDimension; } }
+
         [Export]
-        private int[] _startConfiguration;
+        private Godot.Collections.Array<int> _startConfiguration;
+        public Godot.Collections.Array<int> StartConfiguration { get { return _startConfiguration; } }
+
         [Export]
-        private int[] _creationSeq;
+        private Godot.Collections.Array<int> _scramble;
+        public Godot.Collections.Array<int> CreationSeq { get { return _scramble; } }
+
         [Export]
-        private int[] _nullIds;
+        private Godot.Collections.Array<int> _nullIds;
+        public Godot.Collections.Array<int> NullIds { get { return _nullIds; } }
 
         [Signal]
         delegate void ChangedMovesCounter(int movesCounter);
 
 
 
-        public void InitSequence(Vector2 frameDimension, int targetColorId = 0, int[] configuration = null, int[] creationSeq = null, int[] nullIds = null)
+        public void InitSequence(Vector2 frameDimension, int targetColorId = 0, Godot.Collections.Array<int> configuration = null, Godot.Collections.Array<int> scramble = null, Godot.Collections.Array<int> nullIds = null)
         {
             GlobalPosition = Vector2.Zero;
 
@@ -54,9 +63,9 @@ namespace Managers
             else
             {
 
-                _startConfiguration = new int[] { };
-                Array.Resize(ref _startConfiguration, (int)(_frameDimension[0] * _frameDimension[1]));
-                for (int i = 0; i < _startConfiguration.Length; i++)
+                _startConfiguration = new Godot.Collections.Array<int> { };
+                _startConfiguration.Resize((int)(_frameDimension[0] * _frameDimension[1]));
+                for (int i = 0; i < _startConfiguration.Count; i++)
                 {
                     _startConfiguration[i] = 0;
                 }
@@ -93,7 +102,7 @@ namespace Managers
 
                         BasePiece piece = _piecesScene.Instance<BasePiece>();
                         piece.Init(id, colorId, position, _pieceExtents);
-                        
+
                         _sequence.AddChild(piece);
                         _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
                         _sequence.UpdatePieceDict(id, piece);
@@ -103,10 +112,10 @@ namespace Managers
             }
             _sequence.UpdateNumberOfPieces(numberOfPieces);
 
-            if (creationSeq != null)
+            if (scramble != null)
             {
-                _creationSeq = creationSeq;
-                _sequence.CreateFromCreationSequence(_creationSeq, ref _startConfiguration);
+                _scramble = scramble;
+                _sequence.CreateFromCreationSequence(_scramble, ref _startConfiguration);
             }
 
 
@@ -120,7 +129,7 @@ namespace Managers
             _pieceExtents = new Vector2(pieceExtents, pieceExtents);
             _startPosition = Globals.GridInfoManager.GetStartPosition(_frameDimension, _pieceExtents, _separation);
 
-            InitSequence(_frameDimension, _targetColorId, null, _creationSeq, _nullIds);
+            InitSequence(_frameDimension, _targetColorId, null, _scramble, _nullIds);
         }
 
 
@@ -166,16 +175,54 @@ namespace Managers
             _sequence.Restart(_startConfiguration);
 
         }
+        public void CreateSequence(Vector2 frameDimension, Godot.Collections.Array<int> configuration, Godot.Collections.Array<int> scramble, Godot.Collections.Array<int> nullIds)
+        {
+            MovesCounter = 0;
+            _sequence.ClearAll();
+
+            int pieceExtents = Globals.GridInfoManager.GetMaxTypeAExtents(frameDimension, _separation);
+            _pieceExtents = new Vector2(pieceExtents, pieceExtents);
+            _startPosition = Globals.GridInfoManager.GetStartPosition(frameDimension, _pieceExtents, _separation);
+
+            InitSequence(frameDimension, _targetColorId, null, scramble, nullIds);
+        }
+
+        public Godot.Collections.Array<int> CreateNullIds()
+        {
+            foreach (int id in _sequence.CreateNullIds())
+            {
+                _nullIds.Add(id);
+            }
+            return _nullIds;
+        }
+        public bool ModifyPiece(int id)
+        {
+            return _sequence.ModifyPiece(id);
+        }
+
+        public Godot.Collections.Array<int> GetCurrentConfiguration()
+        {
+            return _sequence.CurrentConfiguration;
+        }
 
 
+        public void _on_SequenceTypeA_AddPiece(int id)
+        {
+            Vector2 pos = Globals.GridInfoManager.FromIdToPos(id, _frameDimension, _startPosition);
+            BasePiece piece = _piecesScene.Instance<BasePiece>();
+            piece.Init(id, 0, pos, _pieceExtents);
 
+            _sequence.AddChild(piece);
+            _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
+            _sequence.UpdatePieceDict(id, piece);
+        }
         public void _on_SequenceTypeA_Solved()
         {
             GD.Print("Solved in " + _movesCounter + " moves");
         }
         public void _on_SequenceTypeA_Moved()
         {
-            MovesCounter = MovesCounter+1;
+            MovesCounter = MovesCounter + 1;
         }
 
     }

@@ -5,6 +5,8 @@ namespace Managers
 {
     class MainManager : Node2D
     {
+        [Export]
+        private bool _devToolsEnabled = false;
         private PuzzleManager _puzzleManager;
         private UIs.PuzzleUI _puzzleUI;
         private UIs.OptionsUI _optionsUI;
@@ -16,7 +18,7 @@ namespace Managers
 
         public override void _Ready()
         {
-            Globals.GridInfoManager.InitAreaSize(GetViewport().GetVisibleRect().Size, new Vector3(50, 100, 100));
+            Globals.GridInfoManager.InitAreaSize(GetViewport().GetVisibleRect().Size, new Vector3(50, 200, 100), new Vector2(1,1));
             _puzzleUI = GetNode<UIs.PuzzleUI>("%PuzzleUI");
             _optionsUI = GetNode<UIs.OptionsUI>("%OptionsUI");
             _puzzleLayer = GetNode<CanvasLayer>("PuzzleLayer");
@@ -25,7 +27,17 @@ namespace Managers
 
             _debugLabel = new Label();
             _puzzleLayer.AddChild(_debugLabel);
-            _debugLabel.RectScale = new Vector2(2,2);
+            _debugLabel.RectScale = new Vector2(2, 2);
+
+            if (_devToolsEnabled)
+            {
+                PackedScene puzzleCreationUIScene = ResourceLoader.Load<PackedScene>(Globals.Utilities.GetPuzzleCreationUIScenePath());
+                DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instance<DevTools.PuzzleCreationUI>();
+                _puzzleLayer.AddChild(puzzleCreationUI);
+                
+                puzzleCreationUI.GetNode<DevTools.PuzzleCreationManager>("PuzzleCreationManager").Init(_puzzleManager);
+
+            }
         }
 
         // public override void _PhysicsProcess(float delta)
@@ -33,7 +45,7 @@ namespace Managers
         //     _debugLabel.Text = $"Size: {GetViewport().Size} \n OverriderSize: {GetViewport().GetSizeOverride()} \n";
         //     _debugLabel.Text += $"VisibleSize: {GetViewport().GetVisibleRect().Size} \n MousePos: {GetGlobalMousePosition()} \n";
         //     _debugLabel.Text += $"WindowSize: {OS.WindowSize} \n";
-            
+
         // }
         private void AddPuzzleManager()
         {
@@ -52,6 +64,7 @@ namespace Managers
         {
 
         }
+
     }
 
 }
