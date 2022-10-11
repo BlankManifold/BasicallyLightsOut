@@ -63,7 +63,6 @@ namespace Globals
         static public Vector2 FromIdToPos(int id, Vector2 frameDimensions, Vector2 startPosition)
         {
             int[] coords = Globals.Utilities.IdToCoords(id, frameDimensions);
-
             Vector2 coordsShift = new Vector2(coords[1], coords[0]);
             return startPosition + 2 * coordsShift * _pieceExtents + coordsShift * _separation;
         }
