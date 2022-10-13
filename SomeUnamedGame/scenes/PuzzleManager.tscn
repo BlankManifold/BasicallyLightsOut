@@ -5,7 +5,7 @@
 
 [node name="PuzzleManager" type="Node2D" groups=["PuzzleManager"]]
 script = ExtResource( 1 )
-_frameDimension = Vector2( 5, 5 )
+_startConfiguration = [  ]
 _nullIds = [  ]
 
 [node name="SequenceTypeA" parent="." instance=ExtResource( 2 )]

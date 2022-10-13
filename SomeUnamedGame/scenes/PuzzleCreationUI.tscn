@@ -1,12 +1,22 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/DevTools/PuzzleCreationUI.cs" type="Script" id=1]
 [ext_resource path="res://scripts/DevTools/PuzzleCreationManager.cs" type="Script" id=2]
 [ext_resource path="res://assets/temp.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/Louis George Cafe Bold.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 45
+font_data = ExtResource( 5 )
+
+[sub_resource type="Theme" id=2]
+default_font = SubResource( 1 )
 
 [node name="PuzzleCreationUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -3.0
+margin_bottom = -3.0
 mouse_filter = 2
 script = ExtResource( 1 )
 
@@ -32,58 +42,66 @@ rect_min_size = Vector2( 100, 50 )
 prefix = "cols"
 
 [node name="Buttons" type="HBoxContainer" parent="."]
-margin_left = 445.0
-margin_top = 279.0
-margin_right = 957.0
-margin_bottom = 322.0
+margin_left = 485.0
+margin_top = 288.0
+margin_right = 1046.0
+margin_bottom = 331.0
 custom_constants/separation = 20
 alignment = 1
 
-[node name="Clear" type="Button" parent="Buttons"]
-margin_right = 93.0
-margin_bottom = 43.0
-rect_min_size = Vector2( 80, 40 )
-custom_fonts/font = ExtResource( 3 )
-text = "Clear"
-
 [node name="Update" type="Button" parent="Buttons"]
-margin_left = 113.0
-margin_right = 237.0
+margin_right = 124.0
 margin_bottom = 43.0
 rect_min_size = Vector2( 80, 40 )
 custom_fonts/font = ExtResource( 3 )
 text = "Update"
 
+[node name="Reset" type="Button" parent="Buttons"]
+margin_left = 144.0
+margin_right = 238.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 80, 40 )
+custom_fonts/font = ExtResource( 3 )
+text = "Reset"
+
+[node name="Clear" type="Button" parent="Buttons"]
+margin_left = 258.0
+margin_right = 351.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 80, 40 )
+custom_fonts/font = ExtResource( 3 )
+text = "Clear"
+
 [node name="Save" type="Button" parent="Buttons"]
-margin_left = 257.0
-margin_right = 341.0
+margin_left = 371.0
+margin_right = 455.0
 margin_bottom = 43.0
 rect_min_size = Vector2( 80, 40 )
 custom_fonts/font = ExtResource( 3 )
 text = "Save"
 
-[node name="ViewGrid" type="Button" parent="Buttons"]
-margin_left = 361.0
-margin_right = 512.0
+[node name="Load" type="Button" parent="Buttons"]
+margin_left = 475.0
+margin_right = 561.0
 margin_bottom = 43.0
 rect_min_size = Vector2( 80, 40 )
 custom_fonts/font = ExtResource( 3 )
-text = "ViewGrid"
+text = "Load"
 
 [node name="StatusLabel" type="Label" parent="."]
 margin_left = 22.0
-margin_top = 200.0
+margin_top = 45.0
 margin_right = 215.0
-margin_bottom = 237.0
+margin_bottom = 82.0
 rect_scale = Vector2( 1.5, 1.5 )
 custom_fonts/font = ExtResource( 3 )
 text = "Status: PLAY"
 
 [node name="InfoLabel" type="Label" parent="."]
-margin_left = 774.0
-margin_top = 17.0
-margin_right = 886.0
-margin_bottom = 82.0
+margin_left = 761.0
+margin_top = 63.0
+margin_right = 873.0
+margin_bottom = 128.0
 rect_scale = Vector2( 2.5, 2.5 )
 text = "D: enable/disable
 C: creation seq
@@ -91,16 +109,58 @@ P: play
 M: modify config"
 
 [node name="FrameLabel" type="Label" parent="."]
-margin_left = 649.0
-margin_top = 199.0
-margin_right = 900.0
-margin_bottom = 236.0
+margin_left = 26.0
+margin_top = 114.0
+margin_right = 277.0
+margin_bottom = 151.0
 rect_scale = Vector2( 1.5, 1.5 )
 custom_fonts/font = ExtResource( 3 )
 text = "FrameDim: (0,0)"
 
+[node name="ScrambleLabel" type="Label" parent="."]
+margin_left = 26.0
+margin_top = 186.0
+margin_right = 277.0
+margin_bottom = 223.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_fonts/font = ExtResource( 3 )
+text = "Scramble:"
+
 [node name="PuzzleCreationManager" type="Node" parent="."]
 script = ExtResource( 2 )
 
+[node name="SaveDialog" type="FileDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -501.0
+margin_top = -738.0
+margin_right = 504.0
+margin_bottom = -46.0
+rect_min_size = Vector2( 400, 140 )
+theme = SubResource( 2 )
+window_title = "Save a PuzzleResource"
+
+[node name="LoadDialog" type="FileDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -501.0
+margin_top = -738.0
+margin_right = 504.0
+margin_bottom = -46.0
+rect_min_size = Vector2( 400, 140 )
+theme = SubResource( 2 )
+window_title = "Open a PuzzleResource"
+mode = 0
+
 [connection signal="value_changed" from="RowsColsFields/RowsField" to="." method="_on_RowsField_value_changed"]
 [connection signal="value_changed" from="RowsColsFields/ColsField" to="." method="_on_ColsField_value_changed"]
+[connection signal="confirmed" from="SaveDialog" to="." method="_on_SaveDialog_confirmed"]
+[connection signal="popup_hide" from="SaveDialog" to="." method="_on_SaveDialog_popup_hide"]
+[connection signal="confirmed" from="LoadDialog" to="." method="_on_LoadDialog_confirmed"]
+[connection signal="popup_hide" from="LoadDialog" to="." method="_on_LoadDialog_popup_hide"]

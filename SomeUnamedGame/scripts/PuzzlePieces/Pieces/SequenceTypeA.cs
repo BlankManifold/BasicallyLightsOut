@@ -131,7 +131,23 @@ namespace PuzzlePieces
                 _piecesDict[id].SetColor(startConfiguration[id]);
             }
         }
+        public void FillConfiguration(int colorId = 0)
+        {
+            _numberOfSolvedPieces = 0;
+            for (int i = 0; i < _currentConfiguration.Count; i++)
+            {
+                _currentConfiguration[i] = colorId;
+            }
 
+            foreach (int id in _piecesDict.Keys)
+            {
+                _piecesDict[id].SetColor(colorId);
+            }
+        }
+        public void FlipManually(int id)
+        {
+            _piecesDict[id].Flip(true);
+        }
 
         public void _on_BasePiece_Flipping(int id, int colorId, bool isSetup)
         {
