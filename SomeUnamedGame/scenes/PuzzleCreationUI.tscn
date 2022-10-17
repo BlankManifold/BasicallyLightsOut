@@ -142,6 +142,7 @@ margin_bottom = -46.0
 rect_min_size = Vector2( 400, 140 )
 theme = SubResource( 2 )
 window_title = "Save a PuzzleResource"
+show_hidden_files = true
 
 [node name="LoadDialog" type="FileDialog" parent="."]
 visible = true
@@ -155,8 +156,9 @@ margin_right = 504.0
 margin_bottom = -46.0
 rect_min_size = Vector2( 400, 140 )
 theme = SubResource( 2 )
-window_title = "Open a PuzzleResource"
+window_title = "Open a File"
 mode = 0
+show_hidden_files = true
 
 [connection signal="value_changed" from="RowsColsFields/RowsField" to="." method="_on_RowsField_value_changed"]
 [connection signal="value_changed" from="RowsColsFields/ColsField" to="." method="_on_ColsField_value_changed"]

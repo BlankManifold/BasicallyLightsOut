@@ -103,7 +103,10 @@ namespace Managers
         }
 
 
-
+        public void Clear()
+        {
+            _sequence.ClearAll();
+        }
         public void Restart(GArrayInt scramble = null)
         {
             MovesCounter = 0;

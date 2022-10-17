@@ -1,0 +1,100 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/Louis George Cafe Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/temp.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/UIs/MenusTemplate.cs" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 100
+font_data = ExtResource( 1 )
+
+[node name="MainMenuUI" type="Control" groups=["menu"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+
+[node name="Title" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_top = 224.0
+margin_right = 20.0
+margin_bottom = 264.0
+
+[node name="Label" type="Label" parent="Title"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -146.0
+margin_top = -56.5
+margin_right = 146.0
+margin_bottom = 56.5
+custom_fonts/font = SubResource( 1 )
+text = "Cacca"
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -160.0
+margin_right = 100.0
+margin_bottom = 160.0
+custom_constants/separation = 100
+
+[node name="NormalMode" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 40 )
+
+[node name="NormalModeLabel" type="Label" parent="ButtonsContainer/NormalMode"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -102.0
+margin_top = -18.5
+margin_right = 102.0
+margin_bottom = 18.5
+custom_fonts/font = ExtResource( 2 )
+text = "Normal mode"
+
+[node name="TimedMode" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+margin_top = 140.0
+margin_right = 200.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 200, 40 )
+
+[node name="TimedModeLabel" type="Label" parent="ButtonsContainer/TimedMode"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -102.0
+margin_top = -18.5
+margin_right = 102.0
+margin_bottom = 18.5
+custom_fonts/font = ExtResource( 2 )
+text = "Timed mode"
+
+[node name="Options" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+margin_top = 280.0
+margin_right = 200.0
+margin_bottom = 320.0
+rect_min_size = Vector2( 200, 40 )
+
+[node name="OptionLabel" type="Label" parent="ButtonsContainer/Options"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -103.0
+margin_top = -17.0
+margin_right = 101.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 2 )
+text = "Options"
+align = 1

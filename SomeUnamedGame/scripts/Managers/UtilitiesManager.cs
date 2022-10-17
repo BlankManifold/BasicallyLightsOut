@@ -43,6 +43,10 @@ namespace Globals
         {
             return "scenes/PuzzleCreationUI.tscn";
         }
+        static public string GetPuzzleDataResourcePath(string type, int id)
+        {
+            return $"puzzleResource/{type}/p_{id}.tres";
+        }
     }
 
 }

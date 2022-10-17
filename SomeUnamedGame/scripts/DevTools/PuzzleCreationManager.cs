@@ -225,8 +225,8 @@ namespace DevTools
             
             Resource _puzzleDataRes = ResourceLoader.Load(filePath);
             _frameDimensions = (Vector2)_puzzleDataRes.Get("FrameDimensions");
-            _scramble = new GArrayInt((GArray)_puzzleDataRes.Get("Scramble"));
-            _nullIds = new GArrayInt((GArray)_puzzleDataRes.Get("NullIds"));
+            _scramble = new GArrayInt(((GArray)_puzzleDataRes.Get("Scramble")).Duplicate());
+            _nullIds = new GArrayInt(((GArray)_puzzleDataRes.Get("NullIds")).Duplicate());
 
             UpdateConfiguration();
             _puzzleCreationUI.UpdateFrameLabel(_frameDimensions);

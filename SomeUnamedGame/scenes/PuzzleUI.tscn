@@ -63,3 +63,28 @@ margin_bottom = 10.0
 mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 1 )
 text = "OPTIONS"
+
+[node name="BackButton" type="TextureButton" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 301.0
+margin_top = -96.0
+margin_right = 451.0
+margin_bottom = -56.0
+
+[node name="Label" type="Label" parent="BackButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -71.0
+margin_top = -18.5
+margin_right = 71.0
+margin_bottom = 18.5
+mouse_default_cursor_shape = 2
+custom_fonts/font = ExtResource( 1 )
+text = "BACK"
+align = 1
+valign = 1

@@ -76,5 +76,10 @@ namespace Globals
 
             return false;
         }
+
+        static public Vector2 GetCenter()
+        {
+            return _areaCenter;
+        }
     }
 }
