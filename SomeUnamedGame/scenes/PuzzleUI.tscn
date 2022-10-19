@@ -1,13 +1,21 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/temp.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/UIs/PuzzleUI.cs" type="Script" id=2]
 
 [node name="PuzzleUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+script = ExtResource( 2 )
 
-[node name="RestartButton" type="TextureButton" parent="."]
+[node name="NormalModeUI" type="Control" parent="."]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="RestartButton" type="TextureButton" parent="NormalModeUI" groups=["PuzzleUIButton"]]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -21,7 +29,7 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Label" type="Label" parent="RestartButton"]
+[node name="Label" type="Label" parent="NormalModeUI/RestartButton"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -33,15 +41,83 @@ margin_bottom = 18.5
 custom_fonts/font = ExtResource( 1 )
 text = "RESTART"
 
-[node name="MovesLabel" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -20.0
-margin_top = 24.0
-margin_right = 20.0
-margin_bottom = 38.0
+[node name="MovesLabel" type="Label" parent="NormalModeUI"]
+anchor_top = 0.025
+anchor_right = 1.0
+anchor_bottom = 0.044
+margin_bottom = 0.519997
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+valign = 1
 
-[node name="OptionsButton" type="TextureButton" parent="."]
+[node name="TimedModeUI" type="Control" parent="."]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="ResetButton" type="TextureButton" parent="TimedModeUI" groups=["PuzzleUIButton"]]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -158.0
+margin_top = -97.0
+margin_right = -8.0
+margin_bottom = -57.0
+mouse_default_cursor_shape = 2
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="TimedModeUI/ResetButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -67.0
+margin_top = -18.5
+margin_right = 67.0
+margin_bottom = 18.5
+custom_fonts/font = ExtResource( 1 )
+text = "RESET"
+
+[node name="StartButton" type="TextureButton" parent="TimedModeUI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -46.5
+margin_top = -20.0
+margin_right = 46.5
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="TimedModeUI/StartButton"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "START"
+
+[node name="TimerLabel" type="Label" parent="TimedModeUI"]
+anchor_top = 0.025
+anchor_right = 1.0
+anchor_bottom = 0.044
+margin_bottom = 0.519997
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 1 )
+text = "1:11.11"
+align = 1
+valign = 1
+
+[node name="Timer" type="Timer" parent="TimedModeUI"]
+wait_time = 10.99
+one_shot = true
+
+[node name="OptionsButton" type="TextureButton" parent="." groups=["PuzzleUIButton"]]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -64,7 +140,7 @@ mouse_default_cursor_shape = 2
 custom_fonts/font = ExtResource( 1 )
 text = "OPTIONS"
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="TextureButton" parent="." groups=["PuzzleUIButton"]]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -88,3 +164,5 @@ custom_fonts/font = ExtResource( 1 )
 text = "BACK"
 align = 1
 valign = 1
+
+[connection signal="button_down" from="TimedModeUI/StartButton" to="." method="_on_StartButton_button_down"]

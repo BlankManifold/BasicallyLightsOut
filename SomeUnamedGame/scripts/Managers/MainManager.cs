@@ -11,11 +11,12 @@ namespace Managers
         private UIs.PuzzleUI _puzzleUI;
         private UIs.OptionsUI _optionsUI;
         private UIs.NormalModeMenuUI _normalModeMenu;
+        private UIs.TimedModeMenuUI _timedModeMenu;
         private UIs.MenusTemplate _mainMenu;
-
         private CanvasLayer _puzzleLayer;
-
         private Label _debugLabel;
+        private Globals.Mode _mode;
+
 
 
         public override void _Ready()
@@ -26,8 +27,9 @@ namespace Managers
             _puzzleLayer = GetNode<CanvasLayer>("PuzzleLayer");
             _mainMenu = GetNode<UIs.MenusTemplate>("%MainMenuUI");
             _normalModeMenu = GetNode<UIs.NormalModeMenuUI>("%NormalModeMenuUI");
+            _timedModeMenu = GetNode<UIs.TimedModeMenuUI>("%TimedModeMenuUI");
 
-            AddPuzzleManager();
+            _puzzleManager = GetNode<Managers.PuzzleManager>("%PuzzleManager"); ;
             _puzzleUI.Visible = false;
             _normalModeMenu.Visible = false;
             _optionsUI.Visible = false;
@@ -35,7 +37,6 @@ namespace Managers
 
             if (_devToolsEnabled)
             {
-
                 _debugLabel = new Label();
                 _puzzleLayer.AddChild(_debugLabel);
                 _debugLabel.RectScale = new Vector2(2, 2);
@@ -47,41 +48,22 @@ namespace Managers
             }
         }
 
-       
-        private void AddPuzzleManager()
-        {
-            PackedScene puzzleManagerScene = ResourceLoader.Load<PackedScene>(Globals.Utilities.GetPuzzleMenagerScenePath());
-            _puzzleManager = puzzleManagerScene.Instance<PuzzleManager>();
-            GetNode("%PuzzleControl").AddChild(_puzzleManager);
-            _puzzleManager.Connect("ChangedMovesCounter", _puzzleUI, "_on_PuzzleManager_ChangedMovesCounter");
-        }
 
-        public void _on_RestartButton_button_down()
-        {
-            _puzzleManager.Restart();
-        }
-
-        public void _on_OptionsButton_button_down()
-        {
-
-        }
-        public void _on_BackButton_button_down()
-        {
-            _puzzleManager.Clear();
-            _normalModeMenu.Visible = true;
-            _puzzleUI.Visible = false;
-        }
 
         public void _on_MainMenuUI_UIButton_down(string name)
         {
             switch (name)
             {
                 case "NormalMode":
+                    _mode = Globals.Mode.NORMAL;
                     _mainMenu.Visible = false;
                     _normalModeMenu.Visible = true;
                     break;
 
                 case "TimedMode":
+                    _mode = Globals.Mode.TIMED;
+                    _mainMenu.Visible = false;
+                    _timedModeMenu.Visible = true;
                     break;
 
                 case "Options":
@@ -91,11 +73,43 @@ namespace Managers
                     break;
             }
         }
+        public void _on_PuzzleUI_UIButton_down(string name)
+        {
+            switch (name)
+            {
+                case "RestartButton":
+                    _puzzleManager.Restart();
+                    break;
 
+                case "ResetButton":
+                    _puzzleUI.ActiveState(UIs.PuzzleUI.State.START);
+                    _puzzleManager.CreateNewRandomSequence();
+                    break;
+
+                case "OptionsButton":
+                    break;
+
+                case "BackButton":
+                    _puzzleManager.Clear();
+                    _puzzleUI.Disactive();
+
+                    switch (_mode)
+                    {
+                        case Globals.Mode.NORMAL:
+                            _normalModeMenu.Visible = true;
+                            break;
+
+                        case Globals.Mode.TIMED:
+                            _timedModeMenu.Visible = true;
+                            break;
+                    }
+                    break;
+            }
+        }
         public void _on_NormalModeMenuUI_UIButton_down(string name)
         {
             _normalModeMenu.Visible = false;
-            _puzzleUI.Visible = true;
+            _puzzleUI.ActiveAs(Globals.Mode.NORMAL);
 
             string[] typeAndId = name.Split('_');
             string type = typeAndId[0];
@@ -104,6 +118,26 @@ namespace Managers
             Resource puzzleDataRes = ResourceLoader.Load(Globals.Utilities.GetPuzzleDataResourcePath(type, id));
             _puzzleManager.UpdatePuzzleResource(puzzleDataRes);
             _puzzleManager.CreateSequence();
+        }
+        public void _on_TimedModeMenuUI_UIButton_down(string name)
+        {
+            _timedModeMenu.Visible = false;
+            _puzzleUI.ActiveAs(Globals.Mode.TIMED);
+
+            string[] dims = name.Split('x');
+            Vector2 frameDimensions = new Vector2(dims[0].ToInt(), dims[1].ToInt());
+
+            _puzzleManager.CreateRandomSequence(frameDimensions);
+        }
+        public void _on_NormalModeMenuUI_BackButton_down()
+        {
+            _mainMenu.Visible = true;
+            _normalModeMenu.Visible = false;
+        }
+        public void _on_TimedModeMenuUI_BackButton_down()
+        {
+            _mainMenu.Visible = true;
+            _timedModeMenu.Visible = false;
         }
 
     }

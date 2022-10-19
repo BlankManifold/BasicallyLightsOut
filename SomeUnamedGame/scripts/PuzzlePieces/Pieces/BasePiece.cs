@@ -15,13 +15,13 @@ namespace PuzzlePieces
         [Signal]
         delegate void Flipping(int id, int colorId, bool isSetup = false);
 
+
         public virtual void Init(int id, int colorId, Vector2 position, Vector2 _)
         {
             _id = id;
             ColorId = colorId;
             GlobalPosition = position;
         }
-
         public override void _Ready()
         {
             Modulate = Globals.ColorManager.Colors[ColorId];
@@ -29,6 +29,7 @@ namespace PuzzlePieces
             Connect(nameof(Flipping), sequence, "_on_BasePiece_Flipping");
         }
 
+        
         public virtual void Flip(bool isSetup = false)
         {
             int colorId = ColorId;
@@ -38,8 +39,7 @@ namespace PuzzlePieces
             EmitSignal(nameof(Flipping), _id, ColorId, isSetup);
 
             return;
-        }
-       
+        } 
         public virtual int SelfFlip()
         {
             int colorId = ColorId;

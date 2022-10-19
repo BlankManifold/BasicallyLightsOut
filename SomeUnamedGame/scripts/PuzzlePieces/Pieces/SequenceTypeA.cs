@@ -54,6 +54,16 @@ namespace PuzzlePieces
 
             _numberOfSolvedPieces--;
         }
+        public void ResetNumberOfSolvedPieces(bool toZero = false)
+        {
+            if (toZero)
+            {
+                _numberOfSolvedPieces = 0;
+                return;
+            }
+
+            _numberOfSolvedPieces = _numberOfPieces;
+        }
         public void UpdateNumberOfPieces(int numberOfPieces)
         {
             _numberOfPieces = numberOfPieces;
@@ -100,7 +110,7 @@ namespace PuzzlePieces
             }
             else
             {
-                EmitSignal(nameof(AddPiece),id);
+                EmitSignal(nameof(AddPiece), id);
                 return true;
             }
 
@@ -124,16 +134,25 @@ namespace PuzzlePieces
         }
         public void Restart(Godot.Collections.Array<int> startConfiguration)
         {
-            _numberOfSolvedPieces = 0;
+            _numberOfSolvedPieces = _numberOfPieces;
             _currentConfiguration = (Godot.Collections.Array<int>)startConfiguration.Duplicate();
             foreach (int id in _piecesDict.Keys)
             {
                 _piecesDict[id].SetColor(startConfiguration[id]);
+                _numberOfSolvedPieces += Globals.ColorManager.CheckColor(startConfiguration[id], _targetColorId);
             }
         }
         public void FillConfiguration(int colorId = 0)
         {
-            _numberOfSolvedPieces = 0;
+            if (colorId == 0)
+            {
+                ResetNumberOfSolvedPieces();
+            }
+            else
+            {
+               ResetNumberOfSolvedPieces(true); 
+            }
+
             for (int i = 0; i < _currentConfiguration.Count; i++)
             {
                 _currentConfiguration[i] = colorId;
@@ -162,10 +181,11 @@ namespace PuzzlePieces
             }
 
             if (!isSetup)
+            {
                 EmitSignal(nameof(Moved));
-
-            if (IsSolved())
-                EmitSignal(nameof(Solved));
+                if (IsSolved())
+                    EmitSignal(nameof(Solved));
+            }
         }
 
     }

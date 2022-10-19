@@ -7,6 +7,11 @@ namespace Globals
     {
         A, B
     }
+    
+    public enum Mode
+    {
+        NORMAL, TIMED
+    }
 
     static public class Utilities
     {
@@ -49,4 +54,134 @@ namespace Globals
         }
     }
 
+    public struct RandomManager
+    {
+        public static RandomNumberGenerator rng = new RandomNumberGenerator();
+        public static Random rnd = new Random();
+    }
+
+
+    static public class SymmetriesManager
+    {
+        public static bool MainDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        {
+            int count = 0;
+            int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
+
+            for (int row = 0; row < dims[0] - 1; row++)
+            {
+                for (int col = row + 1; col < dims[1]; col++)
+                {
+                    int id1 = Utilities.CoordsToId(row, col, dims);
+                    int id2 = Utilities.CoordsToId(col, row, dims);
+
+                    if (config[id1] == config[id2])
+                    {
+                        count++;
+                    }
+                }
+
+            }
+
+            float symRatio = 2 * (float)count / numberOfPieces;
+            return (symRatio >= 0.75);
+        }
+
+        public static bool SecondaryDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        {
+            int count = 0;
+            int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
+
+            int id1, id2;
+
+            for (int row = 0; row < dims[0] - 1; row++)
+            {
+                for (int col = 0; col < dims[1] - 1 - row; col++)
+                {
+                    id1 = Utilities.CoordsToId(row, col, dims);
+                    id2 = Utilities.CoordsToId((int)dims[1] - 1 - col, (int)dims[0] - 1 - row, dims);
+
+                    if (config[id1] == config[id2])
+                    {
+                        count++;
+                    }
+                }
+
+            }
+
+            float symRatio = 2 * (float)count / numberOfPieces;
+            return (symRatio >= 0.75);
+        }
+
+        public static bool VerticalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        {
+            int rows = (int)dims[0];
+            int cols = (int)dims[1];
+
+            int count = 0;
+            int numberOfPieces = rows * cols;
+            if (dims[0] % 2 != 0)
+            {
+                numberOfPieces -= rows;
+            }
+            int target = cols - 1;
+            int maxCol = cols / 2 - 1;
+            int id2; 
+            int id1 = 0;
+
+
+            for (int row = 0; row < dims[0]; row++)
+            {
+                id1 = row*cols;
+
+                for (int col = 0; col <= maxCol; col++)
+                {
+                    id2 = target - id1;
+
+                    if (config[id1] == config[id2])
+                    {
+                        count++;
+                    }
+                    id1++;
+                }
+                target += 2 * cols;
+            }
+
+            float symRatio = 2 * (float)count / numberOfPieces;
+            return (symRatio >= 0.90);
+        }
+
+        public static bool HorizontalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        {
+            int rows = (int)dims[0];
+            int cols = (int)dims[1];
+
+            int count = 0;
+            int numberOfPieces = (rows - 1) * cols;
+            int baseTarget = numberOfPieces;
+
+            if (dims[1] % 2 != 0)
+            {
+                numberOfPieces -= cols;
+            }
+
+            int maxId = cols * ((int)(dims[0] / 2)) - 1;
+            int id2, target;
+
+            for (int id1 = 0; id1 <= maxId; id1++)
+            {
+                target = baseTarget +  2*(id1 % cols);
+
+                id2 = target - id1;
+                if (config[id1] == config[id2])
+                {
+                    count++;
+                }
+
+            }
+
+            float symRatio = 2 * (float)count / numberOfPieces;
+            return (symRatio >= 0.90);
+        }
+    }
 }

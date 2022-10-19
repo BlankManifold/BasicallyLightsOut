@@ -52,6 +52,8 @@ namespace Managers
 
         [Signal]
         delegate void ChangedMovesCounter(int movesCounter);
+        [Signal]
+        delegate void Solved();
 
 
         public void InitSequence(int targetColorId)
@@ -105,6 +107,8 @@ namespace Managers
 
         public void Clear()
         {
+            _scramble.Clear();
+            _nullIds.Clear();
             _sequence.ClearAll();
         }
         public void Restart(GArrayInt scramble = null)
@@ -128,6 +132,18 @@ namespace Managers
             _startPosition = Globals.GridInfoManager.GetStartPosition(frameDimensions, _pieceExtents, _separation);
 
             InitSequence(frameDimensions, _targetColorId, null, scramble, nullIds);
+        }
+        public void CreateRandomSequence(Vector2 frameDimensions)
+        {
+            MovesCounter = 0;
+            Clear();
+
+            int pieceExtents = Globals.GridInfoManager.GetMaxTypeAExtents(frameDimensions, _separation);
+            _pieceExtents = new Vector2(pieceExtents, pieceExtents);
+            _startPosition = Globals.GridInfoManager.GetStartPosition(frameDimensions, _pieceExtents, _separation);
+
+            CreateRandomScramble(frameDimensions);
+            InitSequence(frameDimensions, _targetColorId, null, _scramble, null);
         }
         public void CreateSequence()
         {
@@ -166,6 +182,14 @@ namespace Managers
         {
             _puzzleDataRes = puzzleDataRes;
         }
+        public void CreateNewRandomSequence()
+        {
+            MovesCounter = 0;
+            _sequence.FillConfiguration(); 
+            CreateRandomScramble(_frameDimensions);
+            GenerateScrambledConfig();
+        }
+
 
         private void AddNeighbours(int id, GArrayInt neighbours)
         {
@@ -211,9 +235,16 @@ namespace Managers
                 _startConfiguration[i] = 0;
             }
 
-            foreach (int invalidId in _nullIds)
+            if (_nullIds != null)
             {
-                _startConfiguration[invalidId] = -1;
+                foreach (int invalidId in _nullIds)
+                {
+                    _startConfiguration[invalidId] = -1;
+                }
+            }
+            else
+            {
+                _nullIds = new GArrayInt() { };
             }
         }
         private void GeneratePieces()
@@ -258,8 +289,32 @@ namespace Managers
             {
                 _sequence.CreateFromCreationSequence(_scramble, ref _startConfiguration);
             }
-        }
 
+            // GD.Print("Primary: " + Globals.SymmetriesManager.MainDiagonalCheck(_startConfiguration, _frameDimensions).ToString());
+            // GD.Print("Secondary: " +  Globals.SymmetriesManager.SecondaryDiagonalCheck(_startConfiguration, _frameDimensions).ToString());
+            // GD.Print("Vertical: " +  Globals.SymmetriesManager.VerticalCheck(_startConfiguration, _frameDimensions).ToString());
+            // GD.Print("Horizontal: " +  Globals.SymmetriesManager.HorizontalCheck(_startConfiguration, _frameDimensions).ToString());
+        }
+        private void CreateRandomScramble(Vector2 frameDimensions)
+        {
+            _scramble.Clear();
+
+            int prevId = -1;
+            int nextId;
+            int numberOfPieces = (int)(frameDimensions[0]*frameDimensions[1]);
+            for (int i = 0; i < numberOfPieces; i++)
+            {
+                nextId = Globals.RandomManager.rnd.Next(0, numberOfPieces - 1);
+
+                if( nextId != prevId )
+                {
+                    _scramble.Add(nextId);
+                    prevId = nextId;
+                    continue;
+                } 
+                i--;
+            }
+        }
 
 
         public void _on_SequenceTypeA_AddPiece(int id)
@@ -274,7 +329,8 @@ namespace Managers
         }
         public void _on_SequenceTypeA_Solved()
         {
-            GD.Print("Solved in " + _movesCounter + " moves");
+            _sequence.ResetNumberOfSolvedPieces();
+            EmitSignal(nameof(Solved));
         }
         public void _on_SequenceTypeA_Moved()
         {

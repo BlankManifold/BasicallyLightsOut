@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/MainMenuUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/PuzzleUI.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/UIs/PuzzleUI.cs" type="Script" id=3]
+[ext_resource path="res://scripts/UIs/PuzzleControl.cs" type="Script" id=3]
 [ext_resource path="res://scripts/Managers/MainManager.cs" type="Script" id=4]
 [ext_resource path="res://scenes/OptionsUI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/NormalModeMenuUI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/TimedModeMenuUI.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/PuzzleManager.tscn" type="PackedScene" id=8]
 
 [node name="Main" type="Node2D" groups=["Main"]]
 script = ExtResource( 4 )
@@ -15,49 +17,24 @@ layer = 0
 
 [node name="OptionsUI" parent="PuzzleLayer" instance=ExtResource( 5 )]
 unique_name_in_owner = true
+visible = false
 
 [node name="PuzzleUI" parent="PuzzleLayer" instance=ExtResource( 2 )]
 unique_name_in_owner = true
-script = ExtResource( 3 )
-
-[node name="RestartButton" parent="PuzzleLayer/PuzzleUI" index="0"]
-__meta__ = {
-"_edit_group_": true,
-"_editor_description_": ""
-}
-
-[node name="MovesLabel" parent="PuzzleLayer/PuzzleUI" index="1"]
-margin_left = -58.0
-margin_top = 26.0
-margin_right = -18.0
-margin_bottom = 40.0
-rect_scale = Vector2( 3, 3 )
-text = "0"
-align = 1
-valign = 1
-
-[node name="OptionsButton" parent="PuzzleLayer/PuzzleUI" index="2"]
-margin_top = -95.0
-margin_bottom = -55.0
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="Label" parent="PuzzleLayer/PuzzleUI/OptionsButton" index="0"]
-margin_left = -70.0
-margin_top = -17.0
-margin_right = 72.0
-margin_bottom = 20.0
-align = 1
-valign = 1
+visible = false
 
 [node name="PuzzleControl" type="Control" parent="PuzzleLayer"]
 unique_name_in_owner = true
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 mouse_filter = 2
+script = ExtResource( 3 )
+
+[node name="PuzzleManager" parent="PuzzleLayer/PuzzleControl" instance=ExtResource( 8 )]
+unique_name_in_owner = true
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -70,6 +47,10 @@ color = Color( 0.333333, 0.333333, 0.333333, 1 )
 
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 
+[node name="TimedModeMenuUI" parent="MenuLayer" instance=ExtResource( 7 )]
+unique_name_in_owner = true
+visible = false
+
 [node name="NormalModeMenuUI" parent="MenuLayer" instance=ExtResource( 6 )]
 unique_name_in_owner = true
 visible = false
@@ -77,8 +58,6 @@ visible = false
 [node name="MainMenuUI" parent="MenuLayer" instance=ExtResource( 1 )]
 unique_name_in_owner = true
 
-[connection signal="button_down" from="PuzzleLayer/PuzzleUI/RestartButton" to="." method="_on_RestartButton_button_down"]
-[connection signal="button_down" from="PuzzleLayer/PuzzleUI/OptionsButton" to="." method="_on_OptionsButton_button_down"]
-[connection signal="button_down" from="PuzzleLayer/PuzzleUI/BackButton" to="." method="_on_BackButton_button_down"]
-
-[editable path="PuzzleLayer/PuzzleUI"]
+[connection signal="ChangeVisible" from="PuzzleLayer/PuzzleUI" to="PuzzleLayer/PuzzleControl" method="_on_PuzzleUI_ChangeVisible"]
+[connection signal="ChangedMovesCounter" from="PuzzleLayer/PuzzleControl/PuzzleManager" to="PuzzleLayer/PuzzleUI" method="_on_PuzzleManager_ChangedMovesCounter"]
+[connection signal="Solved" from="PuzzleLayer/PuzzleControl/PuzzleManager" to="PuzzleLayer/PuzzleUI" method="_on_PuzzleManager_Solved"]

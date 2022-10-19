@@ -20,7 +20,7 @@ namespace UIs
                 button.Connect("button_down", mainNode, targetMethod, new Godot.Collections.Array() { button.Name });
             }
         }
-
+       
         protected new void SetVisible(bool visible)
         {
             Visible = visible;

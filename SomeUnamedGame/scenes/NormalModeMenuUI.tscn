@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/UIs/NormalModeMenuUI.cs" type="Script" id=1]
 [ext_resource path="res://scenes/LevelSelectionButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/temp.tres" type="DynamicFont" id=3]
 
 [node name="NormalModeMenuUI" type="Control" groups=["menu"]]
 anchor_right = 1.0
@@ -15,3 +16,28 @@ _levelsTypeDict = {
 "tutorial": 4
 }
 _levelsSelectionButtonScene = ExtResource( 2 )
+
+[node name="BackButton" type="TextureButton" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 348.0
+margin_top = -182.0
+margin_right = 414.0
+margin_bottom = -144.0
+
+[node name="Label" type="Label" parent="BackButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.0
+margin_top = -38.0
+margin_right = 36.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 3 )
+text = "Back
+"
+align = 1
+valign = 1
