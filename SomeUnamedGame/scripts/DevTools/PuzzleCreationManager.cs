@@ -71,6 +71,8 @@ namespace DevTools
                     keyEvent.Dispose();
                     return;
                 }
+                @event.Dispose();
+                return;
             }
             if (_enabled)
             {
@@ -126,10 +128,16 @@ namespace DevTools
                         mousebutton.Dispose();
                         return;
                     }
+                    @event.Dispose();
+                    return;
                 }
 
                 @event.Dispose();
+                return;
             }
+
+             @event.Dispose();
+             return;
 
         }
 

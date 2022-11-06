@@ -21,6 +21,8 @@ namespace Managers
 
         public override void _Ready()
         {
+            GD.Randomize();
+
             Globals.GridInfoManager.InitAreaSize(GetViewport().GetVisibleRect().Size, new Vector3(50, 200, 100), new Vector2(1, 1));
             _puzzleUI = GetNode<UIs.PuzzleUI>("%PuzzleUI");
             _optionsUI = GetNode<UIs.OptionsUI>("%OptionsUI");
@@ -87,6 +89,13 @@ namespace Managers
                     break;
 
                 case "OptionsButton":
+                    break;
+
+                case "ConvolutionButton":
+                    _puzzleManager.CreateConvolution(Globals.EntropyManager.ConvolutionSquareOverlap2x2);
+                    break;
+                case "NNMFButton":
+                    _puzzleManager.CreateConvolution(Globals.EntropyManager.ConvolutionNNOverlap);
                     break;
 
                 case "BackButton":
