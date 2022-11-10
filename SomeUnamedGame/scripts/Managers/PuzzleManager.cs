@@ -50,6 +50,8 @@ namespace Managers
         public GArrayInt NullIds { get { return _nullIds; } }
 
 
+        private Godot.Collections.Dictionary<string, bool> _badConfig4x4Dict = new Godot.Collections.Dictionary<string, bool>() { };
+
         [Signal]
         delegate void ChangedMovesCounter(int movesCounter);
         [Signal]
@@ -148,7 +150,7 @@ namespace Managers
             _pieceExtents = new Vector2(pieceExtents, pieceExtents);
             _startPosition = Globals.GridInfoManager.GetStartPosition(frameDimensions, _pieceExtents, _separation);
 
-            CreateRandomScramble(frameDimensions);
+            CreateRandomScramble2(frameDimensions);
             InitSequence(frameDimensions, _targetColorId, null, _scramble, null);
         }
         public void CreateSequence()
@@ -192,7 +194,7 @@ namespace Managers
         {
             MovesCounter = 0;
             _sequence.FillConfiguration();
-            CreateRandomScramble(_frameDimensions);
+            CreateRandomScramble2(_frameDimensions);
             GenerateScrambledConfig();
         }
         public void CreateConvolution(convolutionMethod method)
@@ -244,7 +246,7 @@ namespace Managers
 
             if (coords[0] > 0)
             {
-               neighbours.Add(id - (int)frameDimensions[1]);
+                neighbours.Add(id - (int)frameDimensions[1]);
             }
 
             if (coords[1] > 0)
@@ -355,14 +357,23 @@ namespace Managers
             }
 
             GArrayInt toBeRemoved = new GArrayInt() { numberOfPieces - 1, numberOfPieces - (int)frameDimensions[1], (int)frameDimensions[1] - 1, 0 };
+            int toBeRemovedLimit = 2;
+
+            for (int i = 0; i < toBeRemovedLimit; i++)
+            {
+                toBeRemoved.RemoveAt(Globals.RandomManager.rnd.Next(0, toBeRemoved.Count));
+            }
+
             foreach (int idx in toBeRemoved)
             {
                 prepScramble.RemoveAt(idx);
                 prepTestConfig[idx] = 0;
             }
+
+
             int toBeRemovedLength = (int)(numberOfPieces) / 2 - toBeRemoved.Count;
             int scrambleLenght = (int)(numberOfPieces) / 2;
-            // GArrayInt test = new GArrayInt() {1,1,0,0,0,1,0,0,1,0,1,1,0,0,1,1};
+            //GArrayInt test = new GArrayInt() {0,1,1,0,1,0,0,1,0,1,1,0,0,1,1,0};
 
             do
             {
@@ -370,6 +381,7 @@ namespace Managers
                 testConfig = prepTestConfig.Duplicate();
 
                 int idToRemove;
+
                 for (int i = 0; i < toBeRemovedLength; i++)
                 {
                     idToRemove = Globals.RandomManager.rnd.Next(0, _scramble.Count);
@@ -405,6 +417,134 @@ namespace Managers
 
             GetNode<Label>("%TestRoba").Text = $"{_scramble}";
 
+        }
+        private void CreateRandomScramble2(Vector2 frameDimensions)
+        {
+            if (_scramble != null)
+                _scramble = new GArrayInt() { };
+            else
+                _scramble.Clear();
+
+            GArrayInt testConfig = new GArrayInt() { };
+            GArrayInt testConfigScrambled = new GArrayInt() { };
+
+
+            int numberOfPieces = (int)(frameDimensions[0] * frameDimensions[1]);
+
+            testConfig.Resize(numberOfPieces);
+            testConfigScrambled.Resize(numberOfPieces);
+            for (int i = 0; i < numberOfPieces; i++)
+                testConfig[i] = 0;
+
+
+            // GArrayInt toBeRemoved = new GArrayInt() { numberOfPieces - 1, numberOfPieces - (int)frameDimensions[1], (int)frameDimensions[1] - 1, 0 };
+            // int toBeRemovedLimit = 0;
+            // for (int i = 0; i < toBeRemovedLimit; i++)
+            //     toBeRemoved.RemoveAt(Globals.RandomManager.rnd.Next(0, toBeRemoved.Count));
+
+            // int toBeRemovedLength = (int)(numberOfPieces) / 2 - toBeRemoved.Count;
+            int scrambleLenght = (int)(numberOfPieces) / 2;
+
+            do
+            {
+                _scramble.Clear();
+                for (int i = 0; i < numberOfPieces; i++)
+                {
+                    testConfig[i] = 0;
+                }
+
+
+                for (int row = 0; row < _frameDimensions[0]; row++)
+                {
+                    int col = Globals.RandomManager.rnd.Next(0, (int)frameDimensions[1]);
+                    int id = Globals.Utilities.CoordsToId(row, col, frameDimensions);
+
+                    _scramble.Add(id);
+                    testConfig[id] = 1;
+                }
+
+                for (int col = 0; col < frameDimensions[1]; col++)
+                {
+                    int cont = 0;
+                    int id, row;
+                    do
+                    {
+                        row = Globals.RandomManager.rnd.Next(0, (int)frameDimensions[0]);
+                        id = Globals.Utilities.CoordsToId(row, col, frameDimensions);
+                        cont++;
+                    } while (_scramble.Contains(id) && cont < frameDimensions[1]);
+
+                    _scramble.Add(id);
+                    testConfig[id] = 1;
+                }
+
+                for (int i = 0; i < numberOfPieces; i++)
+                {
+                    int cont = testConfig[i];
+                    foreach (int id in GetNeighbours(i, frameDimensions))
+                    {
+                        cont += testConfig[id];
+                    }
+
+                    if (cont % 2 == 0)
+                        testConfigScrambled[i] = 0;
+                    else
+                        testConfigScrambled[i] = 1;
+                }
+
+            }
+            while (
+                    IsBadConfig(frameDimensions,GetBinaryCode(testConfigScrambled)) ||
+                    // false
+                    //Globals.SymmetriesManager.VerticalCheckScramble(test, frameDimensions,scrambleLenght)
+                    Globals.SymmetriesManager.MainDiagonalCheckScramble(testConfig, frameDimensions, scrambleLenght, 1f) ||
+                    Globals.SymmetriesManager.SecondaryDiagonalCheckScramble(testConfig, frameDimensions, scrambleLenght, 1f) ||
+                    Globals.SymmetriesManager.MainDiagonalCheck(testConfigScrambled, frameDimensions, 1f) ||
+                    Globals.SymmetriesManager.SecondaryDiagonalCheck(testConfigScrambled, frameDimensions, 1f) ||
+                    Globals.SymmetriesManager.VerticalCheck(testConfigScrambled, frameDimensions, 1f) ||
+                    Globals.SymmetriesManager.HorizontalCheck(testConfigScrambled, frameDimensions, 1f)
+                );
+
+            GetNode<Label>("%TestRoba").Text = $"{_scramble}";
+
+        }
+        private void LoadBadConfig()
+        {
+            File file = new File();
+            file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.Read);
+            while (!file.EofReached())
+            {
+                string line = file.GetLine();
+                _badConfig4x4Dict[line] = true;
+            }
+            file.Close();
+        }
+        private bool IsBadConfig(Vector2 frameDimensions, string code)
+        {
+            switch (frameDimensions[0])
+            {
+                case 4:
+                    return _badConfig4x4Dict.ContainsKey(code);
+            }
+            return true;
+        }
+        public string GetBinaryCode()
+        {
+            string code = "";
+            foreach (int bit in _sequence.CurrentConfiguration)
+            {
+                code += bit.ToString();
+            }
+            return code;
+        }
+        public string GetBinaryCode(GArrayInt config)
+        {
+            string code = "";
+            foreach (int bit in config)
+            {
+                code += bit.ToString();
+            }
+            return code;
         }
 
         public void _on_SequenceTypeA_AddPiece(int id)

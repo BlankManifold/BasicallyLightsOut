@@ -14,7 +14,10 @@ namespace Globals
         NORMAL, TIMED
     }
 
-
+    static public class Paths
+    {
+        public static readonly string BadConfig4x4path = "user://BadConfig/4x4/nosym.txt";
+    }
     static public class Utilities
     {
         static public int[] IdToCoords(int id, Vector2 frameDimensions)
@@ -68,7 +71,7 @@ namespace Globals
 
     static public class SymmetriesManager
     {
-        public static bool MainDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        public static bool MainDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
         {
             int count = 0;
             int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
@@ -89,9 +92,9 @@ namespace Globals
             }
 
             float symRatio = 2 * (float)count / numberOfPieces;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool SecondaryDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        public static bool SecondaryDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
         {
             int count = 0;
             int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
@@ -114,9 +117,9 @@ namespace Globals
             }
 
             float symRatio = 2 * (float)count / numberOfPieces;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool VerticalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        public static bool VerticalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -147,13 +150,13 @@ namespace Globals
                     }
                     id1++;
                 }
-                target += cols;
+                target += 2 * cols;
             }
 
             float symRatio = 2 * (float)count / numberOfPieces;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool HorizontalCheck(Godot.Collections.Array<int> config, Vector2 dims)
+        public static bool HorizontalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -183,10 +186,10 @@ namespace Globals
             }
 
             float symRatio = 2 * (float)count / numberOfPieces;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
 
-        public static bool MainDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght)
+        public static bool MainDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int count = 0;
 
@@ -219,9 +222,9 @@ namespace Globals
             }
 
             float symRatio = (float)count / scrambleLenght;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool SecondaryDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght)
+        public static bool SecondaryDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int count = 0;
 
@@ -254,9 +257,9 @@ namespace Globals
             }
 
             float symRatio = (float)count / scrambleLenght;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool VerticalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght)
+        public static bool VerticalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -287,13 +290,13 @@ namespace Globals
 
                     id1++;
                 }
-                target +=  cols;
+                target += 2 * cols;
             }
 
             float symRatio = 2 * (float)count / scrambleLenght;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
-        public static bool HorizontalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght)
+        public static bool HorizontalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -321,7 +324,7 @@ namespace Globals
             }
 
             float symRatio = 2 * (float)count / scrambleLenght;
-            return (symRatio >= 0.75);
+            return (symRatio >= cutoff);
         }
     }
 

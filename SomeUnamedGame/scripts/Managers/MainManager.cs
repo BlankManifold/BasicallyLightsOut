@@ -149,6 +149,17 @@ namespace Managers
             _timedModeMenu.Visible = false;
         }
 
+        public void _on_AddBadConfig_button_down()
+        {
+            string code = _puzzleManager.GetBinaryCode();
+            File file = new File();
+
+            file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.ReadWrite);
+            file.SeekEnd();
+            file.StorePascalString(code);
+            file.StoreLine("");
+            file.Close();
+        }
     }
 
 }

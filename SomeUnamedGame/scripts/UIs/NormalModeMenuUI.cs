@@ -60,6 +60,7 @@ namespace UIs
                 }
 
                 startPosition[1] = startPosition[1] + shifty;
+                               
             }
 
             base._Ready();
