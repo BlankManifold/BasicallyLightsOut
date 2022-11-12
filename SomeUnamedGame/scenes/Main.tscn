@@ -7,10 +7,12 @@
 [ext_resource path="res://scenes/OptionsUI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/NormalModeMenuUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/TimedModeMenuUI.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/PuzzleManager.tscn" type="PackedScene" id=8]
-[ext_resource path="res://assets/temp.tres" type="DynamicFont" id=9]
+[ext_resource path="res://scripts/Managers/NormalModeManager.cs" type="Script" id=10]
+[ext_resource path="res://scripts/Managers/TimedModeManager.cs" type="Script" id=11]
 
 [sub_resource type="InputEventKey" id=1]
+meta = true
+command = true
 scancode = 83
 
 [sub_resource type="ShortCut" id=2]
@@ -18,7 +20,6 @@ shortcut = SubResource( 1 )
 
 [node name="Main" type="Node2D" groups=["Main"]]
 script = ExtResource( 4 )
-_devToolsEnabled = true
 
 [node name="PuzzleLayer" type="CanvasLayer" parent="."]
 layer = 0
@@ -40,16 +41,13 @@ anchor_bottom = 0.5
 mouse_filter = 2
 script = ExtResource( 3 )
 
-[node name="PuzzleManager" parent="PuzzleLayer/PuzzleControl" instance=ExtResource( 8 )]
+[node name="TimedPuzzle" type="Node2D" parent="PuzzleLayer/PuzzleControl"]
 unique_name_in_owner = true
+script = ExtResource( 11 )
 
-[node name="TestRoba" type="Label" parent="PuzzleLayer/PuzzleControl/PuzzleManager"]
+[node name="NormalPuzzle" type="Node2D" parent="PuzzleLayer/PuzzleControl"]
 unique_name_in_owner = true
-margin_left = -443.0
-margin_top = -801.0
-margin_right = -403.0
-margin_bottom = -761.0
-custom_fonts/font = ExtResource( 9 )
+script = ExtResource( 10 )
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -82,6 +80,8 @@ shortcut = SubResource( 2 )
 text = "SAVE"
 
 [connection signal="ChangeVisible" from="PuzzleLayer/PuzzleUI" to="PuzzleLayer/PuzzleControl" method="_on_PuzzleUI_ChangeVisible"]
-[connection signal="ChangedMovesCounter" from="PuzzleLayer/PuzzleControl/PuzzleManager" to="PuzzleLayer/PuzzleUI" method="_on_PuzzleManager_ChangedMovesCounter"]
-[connection signal="Solved" from="PuzzleLayer/PuzzleControl/PuzzleManager" to="PuzzleLayer/PuzzleUI" method="_on_PuzzleManager_Solved"]
+[connection signal="ChangedMovesCounter" from="PuzzleLayer/PuzzleControl/TimedPuzzle" to="PuzzleLayer/PuzzleUI" method="_on_Puzzle_ChangedMovesCounter"]
+[connection signal="Solved" from="PuzzleLayer/PuzzleControl/TimedPuzzle" to="PuzzleLayer/PuzzleUI" method="_on_Puzzle_Solved"]
+[connection signal="ChangedMovesCounter" from="PuzzleLayer/PuzzleControl/NormalPuzzle" to="PuzzleLayer/PuzzleUI" method="_on_Puzzle_ChangedMovesCounter"]
+[connection signal="Solved" from="PuzzleLayer/PuzzleControl/NormalPuzzle" to="PuzzleLayer/PuzzleUI" method="_on_Puzzle_Solved"]
 [connection signal="button_down" from="AddBadConfig" to="." method="_on_AddBadConfig_button_down"]

@@ -5,16 +5,17 @@ namespace Managers
 {
     class MainManager : Node2D
     {
-        [Export]
-        private bool _devToolsEnabled = false;
-        private PuzzleManager _puzzleManager;
+        // [Export]
+        // private bool _devToolsEnabled = false;
+        private NormalModeManager _normalPuzzle;
+        private TimedModeManager _timedPuzzle;
         private UIs.PuzzleUI _puzzleUI;
         private UIs.OptionsUI _optionsUI;
         private UIs.NormalModeMenuUI _normalModeMenu;
         private UIs.TimedModeMenuUI _timedModeMenu;
         private UIs.MenusTemplate _mainMenu;
         private CanvasLayer _puzzleLayer;
-        private Label _debugLabel;
+        //private Label _debugLabel;
         private Globals.Mode _mode;
 
 
@@ -31,23 +32,26 @@ namespace Managers
             _normalModeMenu = GetNode<UIs.NormalModeMenuUI>("%NormalModeMenuUI");
             _timedModeMenu = GetNode<UIs.TimedModeMenuUI>("%TimedModeMenuUI");
 
-            _puzzleManager = GetNode<Managers.PuzzleManager>("%PuzzleManager"); ;
+            _normalPuzzle = GetNode<NormalModeManager>("%NormalPuzzle"); ;
+            _timedPuzzle = GetNode<TimedModeManager>("%TimedPuzzle"); ;
+            
             _puzzleUI.Visible = false;
             _normalModeMenu.Visible = false;
+            _timedModeMenu.Visible = false;
             _optionsUI.Visible = false;
 
 
-            if (_devToolsEnabled)
-            {
-                _debugLabel = new Label();
-                _puzzleLayer.AddChild(_debugLabel);
-                _debugLabel.RectScale = new Vector2(2, 2);
-                PackedScene puzzleCreationUIScene = ResourceLoader.Load<PackedScene>(Globals.Utilities.GetPuzzleCreationUIScenePath());
-                DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instance<DevTools.PuzzleCreationUI>();
-                _puzzleLayer.AddChild(puzzleCreationUI);
+            // if (_devToolsEnabled)
+            // {
+            //     _debugLabel = new Label();
+            //     _puzzleLayer.AddChild(_debugLabel);
+            //     _debugLabel.RectScale = new Vector2(2, 2);
+            //     PackedScene puzzleCreationUIScene = ResourceLoader.Load<PackedScene>(Globals.Paths.PuzzleCreationUIScenePath);
+            //     DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instance<DevTools.PuzzleCreationUI>();
+            //     _puzzleLayer.AddChild(puzzleCreationUI);
 
-                puzzleCreationUI.GetNode<DevTools.PuzzleCreationManager>("PuzzleCreationManager").Init(_puzzleManager);
-            }
+            //     puzzleCreationUI.GetNode<DevTools.PuzzleCreationManager>("PuzzleCreationManager").Init(_puzzleManager);
+            // }
         }
 
 
@@ -80,35 +84,36 @@ namespace Managers
             switch (name)
             {
                 case "RestartButton":
-                    _puzzleManager.Restart();
+                    _normalPuzzle.Restart();
                     break;
 
                 case "ResetButton":
                     _puzzleUI.ActiveState(UIs.PuzzleUI.State.START);
-                    _puzzleManager.CreateNewRandomSequence();
+                    _timedPuzzle.CreateSequence();
                     break;
 
                 case "OptionsButton":
                     break;
 
                 case "ConvolutionButton":
-                    _puzzleManager.CreateConvolution(Globals.EntropyManager.ConvolutionSquareOverlap2x2);
+                    _timedPuzzle.CreateConvolution(Globals.EntropyManager.ConvolutionSquareOverlap2x2);
                     break;
                 case "NNMFButton":
-                    _puzzleManager.CreateConvolution(Globals.EntropyManager.ConvolutionNNOverlap);
+                    _timedPuzzle.CreateConvolution(Globals.EntropyManager.ConvolutionNNOverlap);
                     break;
 
                 case "BackButton":
-                    _puzzleManager.Clear();
                     _puzzleUI.Disactive();
 
                     switch (_mode)
                     {
                         case Globals.Mode.NORMAL:
+                            _normalPuzzle.ClearAll();
                             _normalModeMenu.Visible = true;
                             break;
 
                         case Globals.Mode.TIMED:
+                            _timedPuzzle.ClearAll();
                             _timedModeMenu.Visible = true;
                             break;
                     }
@@ -124,9 +129,9 @@ namespace Managers
             string type = typeAndId[0];
             int id = typeAndId[1].ToInt();
 
-            Resource puzzleDataRes = ResourceLoader.Load(Globals.Utilities.GetPuzzleDataResourcePath(type, id));
-            _puzzleManager.UpdatePuzzleResource(puzzleDataRes);
-            _puzzleManager.CreateSequence();
+            Resource puzzleDataRes = ResourceLoader.Load(Globals.Paths.GetPuzzleDataResourcePath(type, id));
+            _normalPuzzle.InitPuzzle(puzzleDataRes);
+            _normalPuzzle.CreateSequence();
         }
         public void _on_TimedModeMenuUI_UIButton_down(string name)
         {
@@ -134,9 +139,10 @@ namespace Managers
             _puzzleUI.ActiveAs(Globals.Mode.TIMED);
 
             string[] dims = name.Split('x');
-            Vector2 frameDimensions = new Vector2(dims[0].ToInt(), dims[1].ToInt());
-
-            _puzzleManager.CreateRandomSequence(frameDimensions);
+            int dim = dims[0].ToInt();
+            
+            _timedPuzzle.InitPuzzle(dim);
+            _timedPuzzle.CreateSequence();
         }
         public void _on_NormalModeMenuUI_BackButton_down()
         {
@@ -149,15 +155,16 @@ namespace Managers
             _timedModeMenu.Visible = false;
         }
 
+
+
         public void _on_AddBadConfig_button_down()
         {
-            string code = _puzzleManager.GetBinaryCode();
+            string code = Globals.Utilities.CreateBinaryCode(_timedPuzzle.CurrentConfiguration);
             File file = new File();
 
             file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.ReadWrite);
             file.SeekEnd();
-            file.StorePascalString(code);
-            file.StoreLine("");
+            file.StoreLine(code);
             file.Close();
         }
     }

@@ -17,6 +17,23 @@ namespace Globals
     static public class Paths
     {
         public static readonly string BadConfig4x4path = "user://BadConfig/4x4/nosym.txt";
+        public static readonly string PuzzleMenagerScenePath = "scenes/PuzzleManager.tscn";
+        public static readonly string PuzzleCreationUIScenePath = "scenes/PuzzleCreationUI.tscn";
+        public static readonly string SequenceTypeAScenePath = "scenes/SequenceTypeA.tscn";
+        static public string GetPiecesScenePath(PiecesType type)
+        {
+            switch (type)
+            {
+                case PiecesType.A:
+                    return "scenes/TypeA.tscn";
+                default:
+                    return "scenes/TypeA.tscn";
+            }
+        }
+        static public string GetPuzzleDataResourcePath(string type, int id)
+        {
+            return $"puzzleResource/{type}/p_{id}.tres";
+        }
     }
     static public class Utilities
     {
@@ -39,27 +56,42 @@ namespace Globals
         {
             return (int)(row * frameDimensions[1] + col);
         }
-        static public string GetPiecesScenePath(PiecesType type)
+        static public GArrayInt GetNeighbours(int id, Vector2 frameDimensions)
         {
-            switch (type)
+            GArrayInt neighbours = new GArrayInt() { };
+            int[] coords = Globals.Utilities.IdToCoords(id, frameDimensions);
+            int testId = (int)id;
+
+            if (coords[0] > 0)
             {
-                case PiecesType.A:
-                    return "scenes/TypeA.tscn";
-                default:
-                    return "scenes/TypeA.tscn";
+                neighbours.Add(id - (int)frameDimensions[1]);
             }
+
+            if (coords[1] > 0)
+            {
+                neighbours.Add(id - 1);
+            }
+
+            if (coords[0] < frameDimensions[0] - 1)
+            {
+                neighbours.Add(id + (int)frameDimensions[1]);
+            }
+
+            if (coords[1] < frameDimensions[1] - 1)
+            {
+                neighbours.Add(id + 1);
+            }
+
+            return neighbours;
         }
-        static public string GetPuzzleMenagerScenePath()
+        static public string CreateBinaryCode(GArrayInt config)
         {
-            return "scenes/PuzzleManager.tscn";
-        }
-        static public string GetPuzzleCreationUIScenePath()
-        {
-            return "scenes/PuzzleCreationUI.tscn";
-        }
-        static public string GetPuzzleDataResourcePath(string type, int id)
-        {
-            return $"puzzleResource/{type}/p_{id}.tres";
+            string code = "";
+            foreach (int bit in config)
+            {
+                code += bit.ToString();
+            }
+            return code;
         }
     }
 

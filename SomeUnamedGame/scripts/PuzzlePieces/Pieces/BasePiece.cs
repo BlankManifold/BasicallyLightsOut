@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 
 namespace PuzzlePieces
@@ -25,7 +24,7 @@ namespace PuzzlePieces
         public override void _Ready()
         {
             Modulate = Globals.ColorManager.Colors[ColorId];
-            SequenceTypeA sequence = (SequenceTypeA)GetTree().GetNodesInGroup("sequenceTypeA")[0];
+            SequenceTypeA sequence = GetParent<SequenceTypeA>();
             Connect(nameof(Flipping), sequence, "_on_BasePiece_Flipping");
         }
 

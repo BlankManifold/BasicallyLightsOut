@@ -1,21 +1,23 @@
-using System.Collections.Generic;
-using System;
 using Godot;
+using GArrayInt = Godot.Collections.Array<int>;
 
 namespace PuzzlePieces
 {
 
     public class SequenceTypeA : Node2D
     {
-        private int _id = 0;
+        private string _code = "";
+        public string Code { get { return _code; } set { _code = value; }}
         private int _numberOfPieces = 0;
+        public int NumberOfPieces { get { return _numberOfPieces; } set { _numberOfPieces = value;}}
         private int _targetColorId = 0;
 
-        private Godot.Collections.Dictionary<int, Godot.Collections.Array<int>> _neighboursDict = new Godot.Collections.Dictionary<int, Godot.Collections.Array<int>>() { };
+        private Godot.Collections.Dictionary<int, GArrayInt> _neighboursDict = new Godot.Collections.Dictionary<int, GArrayInt>() { };
         private Godot.Collections.Dictionary<int, BasePiece> _piecesDict = new Godot.Collections.Dictionary<int, BasePiece>() { };
-        private Godot.Collections.Array<int> _currentConfiguration;
-        public Godot.Collections.Array<int> CurrentConfiguration { get { return _currentConfiguration; } }
+        private GArrayInt _currentConfiguration = new GArrayInt() { };
+        public GArrayInt CurrentConfiguration { get { return _currentConfiguration; }}
         private int _numberOfSolvedPieces = 0;
+        public int NumberOfSolvedPieces { get { return _numberOfSolvedPieces;} set { _numberOfSolvedPieces = value;} }
 
         [Signal]
         delegate void Solved();
@@ -36,62 +38,83 @@ namespace PuzzlePieces
 
 
 
-        public void UpdateNeighboursDict(int id, Godot.Collections.Array<int> neighbours)
+        public void InitSequence(Managers.PuzzleManager puzzleManager)
         {
-            _neighboursDict.Add(id, neighbours);
-        }
-        public void UpdatePieceDict(int id, BasePiece piece)
-        {
-            _piecesDict.Add(id, piece);
-        }
-        public void UpdateNumberOfSolvedPieces(bool solved = true)
-        {
-            if (solved)
-            {
-                _numberOfSolvedPieces++;
-                return;
-            }
+            _numberOfPieces = puzzleManager.StartConfiguration.Count;
+            _targetColorId = puzzleManager.TargetColorId;
+            _code = Globals.Utilities.CreateBinaryCode(puzzleManager.StartConfiguration);
 
-            _numberOfSolvedPieces--;
-        }
-        public void ResetNumberOfSolvedPieces(bool toZero = false)
-        {
-            if (toZero)
-            {
-                _numberOfSolvedPieces = 0;
-                return;
-            }
+            _numberOfSolvedPieces = 0;
 
-            _numberOfSolvedPieces = _numberOfPieces;
+            _currentConfiguration.Resize(_numberOfPieces);
+            for (int i = 0; i < _numberOfPieces; i++)
+                _currentConfiguration[i] = puzzleManager.StartConfiguration[i];
         }
-        public void UpdateNumberOfPieces(int numberOfPieces)
-        {
-            _numberOfPieces = numberOfPieces;
-        }
-        public void SetStartConfiguration(Godot.Collections.Array<int> startConfiguration)
-        {
-            _currentConfiguration = (Godot.Collections.Array<int>)startConfiguration.Duplicate();
-        }
-        public void CreateFromCreationSequence(Godot.Collections.Array<int> scramble, ref Godot.Collections.Array<int> startConfiguration)
+        public void CreateFromScramble(GArrayInt scramble, ref GArrayInt startConfiguration)
         {
             foreach (int id in scramble)
-            {
                 _piecesDict[id].Flip(true);
-            }
 
-            startConfiguration = (Godot.Collections.Array<int>)_currentConfiguration.Duplicate();
+            for (int i = 0; i < _currentConfiguration.Count; i++)
+                startConfiguration[i] = _currentConfiguration[i];
+        }
+        public void CreateFromConfiguration(GArrayInt config)
+        {
+            Restart(config);
+        }
+        public void UpdateNeighboursDict(int id, GArrayInt neighbours) => _neighboursDict.Add(id, neighbours);
+        public void AddPieceToSequence(int id, BasePiece piece)
+        {
+            AddChild(piece);
+            _piecesDict.Add(id, piece);
         }
         public void ClearAll()
         {
             foreach (Node piece in GetChildren())
-            {
                 piece.QueueFree();
-            }
 
             _neighboursDict.Clear();
             _piecesDict.Clear();
             _numberOfSolvedPieces = 0;
             _numberOfPieces = 0;
+        }
+        public void Restart(GArrayInt startConfiguration)
+        {
+            _numberOfSolvedPieces = 0;
+            for (int i = 0; i < startConfiguration.Count; i++)
+                _currentConfiguration[i] = startConfiguration[i];
+
+            foreach (int id in _piecesDict.Keys)
+            {
+                _piecesDict[id].SetColor(startConfiguration[id]);
+                _numberOfSolvedPieces += Globals.ColorManager.CheckColor(startConfiguration[id], _targetColorId);
+            }
+        }
+        public void FillConfiguration(int colorId = 0)
+        {
+            for (int i = 0; i < _currentConfiguration.Count; i++)
+                _currentConfiguration[i] = colorId;
+
+            foreach (int id in _piecesDict.Keys)
+                _piecesDict[id].SetColor(colorId);
+        }
+
+
+        private bool IsSolved() => (_numberOfPieces == _numberOfSolvedPieces);
+
+
+        public GArrayInt CreateNullIds()
+        {
+            GArrayInt nullIds = new GArrayInt() { };
+            foreach (int keys in _piecesDict.Keys)
+            {
+                if (!_piecesDict[keys].IsActive)
+                {
+                    nullIds.Add(keys);
+                }
+            }
+
+            return nullIds;
         }
         public bool ModifyPiece(int id)
         {
@@ -115,69 +138,19 @@ namespace PuzzlePieces
             }
 
         }
-        public Godot.Collections.Array<int> CreateNullIds()
-        {
-            Godot.Collections.Array<int> nullIds = new Godot.Collections.Array<int>() { };
-            foreach (int keys in _piecesDict.Keys)
-            {
-                if (!_piecesDict[keys].IsActive)
-                {
-                    nullIds.Add(keys);
-                }
-            }
 
-            return nullIds;
-        }
-        private bool IsSolved()
-        {
-            return _numberOfPieces == _numberOfSolvedPieces;
-        }
-        public void Restart(Godot.Collections.Array<int> startConfiguration)
-        {
-            _numberOfSolvedPieces = _numberOfPieces;
-            _currentConfiguration = (Godot.Collections.Array<int>)startConfiguration.Duplicate();
-            foreach (int id in _piecesDict.Keys)
-            {
-                _piecesDict[id].SetColor(startConfiguration[id]);
-                _numberOfSolvedPieces += Globals.ColorManager.CheckColor(startConfiguration[id], _targetColorId);
-            }
-        }
-        public void FillConfiguration(int colorId = 0)
-        {
-            if (colorId == 0)
-            {
-                ResetNumberOfSolvedPieces();
-            }
-            else
-            {
-               ResetNumberOfSolvedPieces(true); 
-            }
 
-            for (int i = 0; i < _currentConfiguration.Count; i++)
-            {
-                _currentConfiguration[i] = colorId;
-            }
-
-            foreach (int id in _piecesDict.Keys)
-            {
-                _piecesDict[id].SetColor(colorId);
-            }
-        }
-        public void FlipManually(int id)
-        {
-            _piecesDict[id].Flip(true);
-        }
 
         public void _on_BasePiece_Flipping(int id, int colorId, bool isSetup)
         {
             _currentConfiguration[id] = colorId;
-            _numberOfSolvedPieces += Globals.ColorManager.CheckColor(colorId, _targetColorId);
+            _numberOfSolvedPieces += Globals.ColorManager.CheckColorChanging(colorId, _targetColorId);
 
             foreach (int neighbourId in _neighboursDict[id])
             {
                 colorId = _piecesDict[neighbourId].SelfFlip();
                 _currentConfiguration[neighbourId] = colorId;
-                _numberOfSolvedPieces += Globals.ColorManager.CheckColor(colorId, _targetColorId);
+                _numberOfSolvedPieces += Globals.ColorManager.CheckColorChanging(colorId, _targetColorId);
             }
 
             if (!isSetup)

@@ -145,11 +145,11 @@ namespace UIs
         }
 
 
-        public void _on_PuzzleManager_Solved()
+        public void _on_Puzzle_Solved()
         {
             ActiveState(State.SOLVED);
         }
-        public void _on_PuzzleManager_ChangedMovesCounter(int moveCounter)
+        public void _on_Puzzle_ChangedMovesCounter(int moveCounter)
         {
             if (_state == State.INSPECTING && moveCounter == 1)
             {
