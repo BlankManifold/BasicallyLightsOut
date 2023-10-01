@@ -4,14 +4,14 @@ using Godot;
 namespace PuzzlePieces
 {
 
-    public class TypeA : BasePiece
+    public partial class TypeA : BasePiece
     {
         private CollisionShape2D _shape;
 
 
         [Export]
         private Vector2 _extents = new Vector2(100, 100);
-        public Vector2 Extents { get { return _extents; } }
+        public Vector2 Size { get { return _extents; } }
 
         public override void Init(int id, int colorId, Vector2 position, Vector2 extents)
         {
@@ -21,17 +21,17 @@ namespace PuzzlePieces
         public override void _Ready()
         {
             base._Ready();
-            _shape = GetNode<CollisionShape2D>("Area2D/Shape");
-            RectangleShape2D rectangleShape2D = (RectangleShape2D)(_shape.Shape);
-            rectangleShape2D.Extents = _extents;
+            _shape = GetNode<CollisionShape2D>("Area2D/Shape3D");
+            RectangleShape2D rectangleShape2D = (RectangleShape2D)(_shape.Shape3D);
+            rectangleShape2D.Size = _extents;
 
             ColorRect _rect = GetNode<ColorRect>("ColorRect");
-            _rect.RectSize = 2 * _extents;
-            _rect.RectPosition = - _extents;
+            _rect.Size = 2 * _extents;
+            _rect.Position = - _extents;
         }
-        public void _on_Area2D_input_event(Object _, InputEvent @event, int __)
+        public void _on_Area2D_input_event(object _, InputEvent @event, int __)
         {
-            if (@event is InputEventMouseButton mousebutton && mousebutton.ButtonIndex == 1 && mousebutton.IsPressed())
+            if (@event is InputEventMouseButton mousebutton && mousebutton.ButtonIndex == MouseButton.Left && mousebutton.IsPressed())
             {
                 Flip();
                 mousebutton.Dispose();

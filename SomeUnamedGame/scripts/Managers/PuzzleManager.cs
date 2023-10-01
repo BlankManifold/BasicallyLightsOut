@@ -6,7 +6,7 @@ using GArrayInt = Godot.Collections.Array<int>;
 namespace Managers
 {
 
-    public class PuzzleManager : Node2D
+    public partial class PuzzleManager : Node2D
     {
         protected SequenceTypeA _sequence;
         protected PackedScene _piecesScene;
@@ -51,9 +51,9 @@ namespace Managers
 
 
         [Signal]
-        delegate void ChangedMovesCounter(int movesCounter);
+        delegate void ChangedMovesCounterEventHandler(int movesCounter);
         [Signal]
-        delegate void Solved();
+        delegate void SolvedEventHandler();
 
         public delegate Globals.EntropyManager.ResultArray convolutionMethod(GArrayInt A, int[] dims);
 
@@ -66,9 +66,12 @@ namespace Managers
             _piecesScene = ResourceLoader.Load<PackedScene>(Globals.Paths.GetPiecesScenePath(Globals.PiecesType.A));
             PackedScene sequenceScene = ResourceLoader.Load<PackedScene>(Globals.Paths.SequenceTypeAScenePath);
 
-            _sequence = sequenceScene.Instance<SequenceTypeA>();
+            _sequence = sequenceScene.Instantiate<SequenceTypeA>();
             _sequence.Name = "SequenceTypeA";
             AddChild(_sequence);
+            _sequence.AddPiece += OnSequenceTypeAAddPiece;
+            _sequence.Solved += OnSequenceTypeASolved;
+            _sequence.Moved += OnSequenceTypeAMoved;
         }
 
 
@@ -188,7 +191,7 @@ namespace Managers
 
                         position = _startPosition + j * shiftx + i * shifty;
 
-                        BasePiece piece = _piecesScene.Instance<BasePiece>();
+                        BasePiece piece = _piecesScene.Instantiate<BasePiece>();
                         piece.Init(id, colorId, position, _pieceExtents);
 
                         _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
@@ -223,21 +226,21 @@ namespace Managers
 
 
 
-        public void _on_SequenceTypeA_AddPiece(int id)
+        public void OnSequenceTypeAAddPiece(int id)
         {
             Vector2 pos = Globals.GridInfoManager.FromIdToPos(id, _frameDimensions, _startPosition);
-            BasePiece piece = _piecesScene.Instance<BasePiece>();
+            BasePiece piece = _piecesScene.Instantiate<BasePiece>();
             piece.Init(id, 0, pos, _pieceExtents);
 
             _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
             _sequence.AddPieceToSequence(id, piece);
         }
-        public void _on_SequenceTypeA_Solved()
+        public void OnSequenceTypeASolved()
         {
             _sequence.NumberOfSolvedPieces = 0;
             EmitSignal(nameof(Solved));
         }
-        public void _on_SequenceTypeA_Moved() => MovesCounter = MovesCounter + 1;
+        public void OnSequenceTypeAMoved() => MovesCounter = MovesCounter + 1;
 
     }
 }

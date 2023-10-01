@@ -4,7 +4,7 @@ using GArrayInt = Godot.Collections.Array<int>;
 
 namespace Managers
 {
-    public class NormalModeManager : PuzzleManager
+    public partial class NormalModeManager : PuzzleManager
     {
         [Export]
         private Resource _puzzleDataRes;

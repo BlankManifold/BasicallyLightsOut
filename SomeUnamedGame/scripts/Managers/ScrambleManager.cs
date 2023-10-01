@@ -5,7 +5,7 @@ using GArrayInt = Godot.Collections.Array<int>;
 
 namespace Managers
 {
-    public class ScrambleManager
+    public partial class ScrambleManager
     {
         private int[] _range = null;
         public int[] Range { get; set; }
@@ -137,14 +137,14 @@ namespace Managers
         }
         private void LoadBadConfig()
         {
-            File file = new File();
-            file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.Read);
-            while (!file.EofReached())
-            {
-                string line = file.GetLine();
-                _badConfig4x4Dict[line] = true;
-            }
-            file.Close();
+            // File file = new File();
+            // file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.Read);
+            // while (!file.EofReached())
+            // {
+            //     string line = file.GetLine();
+            //     _badConfig4x4Dict[line] = true;
+            // }
+            // file.Close();
         }
         private bool IsBadConfig(int dim, string code)
         {

@@ -1,0 +1,166 @@
+[gd_scene format=2]
+
+[node name="4x4" type="TabBar"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 58.0
+offset_right = -4.0
+offset_bottom = -4.0
+
+[node name="BestTimes" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+offset_bottom = 436.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Single" type="VBoxContainer" parent="BestTimes"]
+offset_left = 276.0
+offset_right = 526.0
+offset_bottom = 436.0
+theme_override_constants/separation = 10
+
+[node name="1" type="Label" parent="BestTimes/Single"]
+offset_right = 250.0
+offset_bottom = 14.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="2" type="Label" parent="BestTimes/Single"]
+offset_top = 24.0
+offset_right = 250.0
+offset_bottom = 38.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="3" type="Label" parent="BestTimes/Single"]
+offset_top = 48.0
+offset_right = 250.0
+offset_bottom = 62.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="4" type="Label" parent="BestTimes/Single"]
+offset_top = 72.0
+offset_right = 250.0
+offset_bottom = 86.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="5" type="Label" parent="BestTimes/Single"]
+offset_top = 96.0
+offset_right = 250.0
+offset_bottom = 110.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="6" type="Label" parent="BestTimes/Single"]
+offset_top = 120.0
+offset_right = 250.0
+offset_bottom = 134.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="7" type="Label" parent="BestTimes/Single"]
+offset_top = 144.0
+offset_right = 250.0
+offset_bottom = 158.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="8" type="Label" parent="BestTimes/Single"]
+offset_top = 168.0
+offset_right = 250.0
+offset_bottom = 182.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="9" type="Label" parent="BestTimes/Single"]
+offset_top = 192.0
+offset_right = 250.0
+offset_bottom = 206.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="10" type="Label" parent="BestTimes/Single"]
+offset_top = 216.0
+offset_right = 250.0
+offset_bottom = 230.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="Avg5" type="VBoxContainer" parent="BestTimes"]
+offset_left = 546.0
+offset_right = 796.0
+offset_bottom = 436.0
+theme_override_constants/separation = 10
+
+[node name="1" type="Label" parent="BestTimes/Avg5"]
+offset_right = 250.0
+offset_bottom = 14.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="2" type="Label" parent="BestTimes/Avg5"]
+offset_top = 24.0
+offset_right = 250.0
+offset_bottom = 38.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="3" type="Label" parent="BestTimes/Avg5"]
+offset_top = 48.0
+offset_right = 250.0
+offset_bottom = 62.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="4" type="Label" parent="BestTimes/Avg5"]
+offset_top = 72.0
+offset_right = 250.0
+offset_bottom = 86.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="5" type="Label" parent="BestTimes/Avg5"]
+offset_top = 96.0
+offset_right = 250.0
+offset_bottom = 110.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="6" type="Label" parent="BestTimes/Avg5"]
+offset_top = 120.0
+offset_right = 250.0
+offset_bottom = 134.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="7" type="Label" parent="BestTimes/Avg5"]
+offset_top = 144.0
+offset_right = 250.0
+offset_bottom = 158.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="8" type="Label" parent="BestTimes/Avg5"]
+offset_top = 168.0
+offset_right = 250.0
+offset_bottom = 182.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="9" type="Label" parent="BestTimes/Avg5"]
+offset_top = 192.0
+offset_right = 250.0
+offset_bottom = 206.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true
+
+[node name="10" type="Label" parent="BestTimes/Avg5"]
+offset_top = 216.0
+offset_right = 250.0
+offset_bottom = 230.0
+custom_minimum_size = Vector2( 250, 0 )
+clip_text = true

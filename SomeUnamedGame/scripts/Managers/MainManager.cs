@@ -3,7 +3,7 @@ using Godot;
 
 namespace Managers
 {
-    class MainManager : Node2D
+    partial class MainManager : Node2D
     {
         // [Export]
         // private bool _devToolsEnabled = false;
@@ -14,6 +14,7 @@ namespace Managers
         private UIs.NormalModeMenuUI _normalModeMenu;
         private UIs.TimedModeMenuUI _timedModeMenu;
         private UIs.MenusTemplate _mainMenu;
+        private UIs.MenusTemplate _statsMenu;
         private CanvasLayer _puzzleLayer;
         //private Label _debugLabel;
         private Globals.Mode _mode;
@@ -29,6 +30,7 @@ namespace Managers
             _optionsUI = GetNode<UIs.OptionsUI>("%OptionsUI");
             _puzzleLayer = GetNode<CanvasLayer>("PuzzleLayer");
             _mainMenu = GetNode<UIs.MenusTemplate>("%MainMenuUI");
+            _statsMenu = GetNode<UIs.MenusTemplate>("%StatsMenuUI");
             _normalModeMenu = GetNode<UIs.NormalModeMenuUI>("%NormalModeMenuUI");
             _timedModeMenu = GetNode<UIs.TimedModeMenuUI>("%TimedModeMenuUI");
 
@@ -47,7 +49,7 @@ namespace Managers
             //     _puzzleLayer.AddChild(_debugLabel);
             //     _debugLabel.RectScale = new Vector2(2, 2);
             //     PackedScene puzzleCreationUIScene = ResourceLoader.Load<PackedScene>(Globals.Paths.PuzzleCreationUIScenePath);
-            //     DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instance<DevTools.PuzzleCreationUI>();
+            //     DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instantiate<DevTools.PuzzleCreationUI>();
             //     _puzzleLayer.AddChild(puzzleCreationUI);
 
             //     puzzleCreationUI.GetNode<DevTools.PuzzleCreationManager>("PuzzleCreationManager").Init(_puzzleManager);
@@ -154,19 +156,24 @@ namespace Managers
             _mainMenu.Visible = true;
             _timedModeMenu.Visible = false;
         }
-
-
-
-        public void _on_AddBadConfig_button_down()
+        public void _on_TimedModeMenuUI_StatsButton_down()
         {
-            string code = Globals.Utilities.CreateBinaryCode(_timedPuzzle.CurrentConfiguration);
-            File file = new File();
-
-            file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.ReadWrite);
-            file.SeekEnd();
-            file.StoreLine(code);
-            file.Close();
+            _timedModeMenu.Visible = false;
+            _statsMenu.Visible = true;
         }
+
+
+
+        // public void _on_AddBadConfig_button_down()
+        // {
+        //     string code = Globals.Utilities.CreateBinaryCode(_timedPuzzle.CurrentConfiguration);
+        //     File file = new File();
+
+        //     file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.ReadWrite);
+        //     file.SeekEnd();
+        //     file.StoreLine(code);
+        //     file.Close();
+        // }
     }
 
 }

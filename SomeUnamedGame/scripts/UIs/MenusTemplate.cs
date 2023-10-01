@@ -3,7 +3,7 @@ using Godot;
 
 namespace UIs
 {
-    public class MenusTemplate : Control
+    public partial class MenusTemplate : Control
     {
         public override void _Ready()
         {
@@ -13,15 +13,16 @@ namespace UIs
         private void ConnectButton()
         {
             string targetMethod = $"_on_{Name}_UIButton_down";
-            Godot.Object mainNode = (Godot.Object)GetTree().GetNodesInGroup("Main")[0];
-
+            Managers.MainManager mainNode = (Managers.MainManager)GetTree().GetNodesInGroup("Main")[0];
+            
             foreach (TextureButton button in GetTree().GetNodesInGroup($"{Name}Button"))
-            {
-                button.Connect("button_down", mainNode, targetMethod, new Godot.Collections.Array() { button.Name });
+            { 
+                Callable targetCallable = new Callable(mainNode, targetMethod);
+                button.ButtonDown += () => targetCallable.Call(new Variant[]{button.Name});
             }
         }
        
-        protected new void SetVisible(bool visible)
+        protected void SetVisible(bool visible)
         {
             Visible = visible;
         } 

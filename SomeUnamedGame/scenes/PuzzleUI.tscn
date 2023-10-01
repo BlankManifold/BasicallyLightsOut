@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/temp.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/temp.tres" type="FontFile" id=1]
 [ext_resource path="res://scripts/UIs/PuzzleUI.cs" type="Script" id=2]
+
+[sub_resource type="FontFile" id=1]
+font_path = "res://assets/Louis George Cafe Bold.ttf"
+
+[sub_resource type="FontFile" id=2]
+size = 50
+font_data = SubResource( 1 )
 
 [node name="PuzzleUI" type="Control"]
 anchor_right = 1.0
@@ -20,10 +27,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -158.0
-margin_top = -97.0
-margin_right = -8.0
-margin_bottom = -57.0
+offset_left = -158.0
+offset_top = -97.0
+offset_right = -8.0
+offset_bottom = -57.0
 mouse_default_cursor_shape = 2
 __meta__ = {
 "_edit_group_": true
@@ -34,21 +41,21 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -67.0
-margin_top = -18.5
-margin_right = 67.0
-margin_bottom = 18.5
-custom_fonts/font = ExtResource( 1 )
+offset_left = -67.0
+offset_top = -18.5
+offset_right = 67.0
+offset_bottom = 18.5
+theme_override_fonts/font = ExtResource( 1 )
 text = "RESTART"
 
 [node name="MovesLabel" type="Label" parent="NormalModeUI"]
 anchor_top = 0.025
 anchor_right = 1.0
 anchor_bottom = 0.044
-margin_bottom = 0.519997
+offset_bottom = 0.519997
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "0"
 align = 1
 valign = 1
@@ -64,10 +71,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -158.0
-margin_top = -97.0
-margin_right = -8.0
-margin_bottom = -57.0
+offset_left = -158.0
+offset_top = -97.0
+offset_right = -8.0
+offset_bottom = -57.0
 mouse_default_cursor_shape = 2
 __meta__ = {
 "_edit_group_": true
@@ -78,11 +85,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -67.0
-margin_top = -18.5
-margin_right = 67.0
-margin_bottom = 18.5
-custom_fonts/font = ExtResource( 1 )
+offset_left = -67.0
+offset_top = -18.5
+offset_right = 67.0
+offset_bottom = 18.5
+theme_override_fonts/font = ExtResource( 1 )
 text = "RESET"
 
 [node name="StartButton" type="TextureButton" parent="TimedModeUI"]
@@ -90,25 +97,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -46.5
-margin_top = -20.0
-margin_right = 46.5
-margin_bottom = 20.0
+offset_left = -46.5
+offset_top = -20.0
+offset_right = 46.5
+offset_bottom = 20.0
 
 [node name="Label" type="Label" parent="TimedModeUI/StartButton"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_fonts/font = ExtResource( 1 )
+offset_right = 40.0
+offset_bottom = 14.0
+theme_override_fonts/font = ExtResource( 1 )
 text = "START"
 
 [node name="TimerLabel" type="Label" parent="TimedModeUI"]
 anchor_top = 0.025
 anchor_right = 1.0
 anchor_bottom = 0.044
-margin_bottom = 0.519997
+offset_bottom = 0.519997
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "1:11.11"
 align = 1
 valign = 1
@@ -122,23 +129,23 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -443.0
-margin_top = -96.0
-margin_right = -261.0
-margin_bottom = -56.0
+offset_left = -443.0
+offset_top = -96.0
+offset_right = -261.0
+offset_bottom = -56.0
 
 [node name="Label" type="Label" parent="TimedModeUI/ConvolutionButton"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -18.5
-margin_right = 20.0
-margin_bottom = 18.5
+offset_left = -20.0
+offset_top = -18.5
+offset_right = 20.0
+offset_bottom = 18.5
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "convolution"
 align = 1
 valign = 1
@@ -148,24 +155,41 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -445.0
-margin_top = -175.0
-margin_right = -263.0
-margin_bottom = -135.0
+offset_left = -445.0
+offset_top = -175.0
+offset_right = -263.0
+offset_bottom = -135.0
 
 [node name="Label" type="Label" parent="TimedModeUI/NNMFButton"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -18.5
-margin_right = 20.0
-margin_bottom = 18.5
+offset_left = -20.0
+offset_top = -18.5
+offset_right = 20.0
+offset_bottom = 18.5
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "nnmf"
+align = 1
+valign = 1
+
+[node name="SolvedLabel" type="Label" parent="TimedModeUI"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -312.0
+offset_top = -58.0
+offset_right = 312.0
+offset_bottom = 59.0
+theme_override_fonts/font = SubResource( 2 )
+text = "Solved in 
+"
 align = 1
 valign = 1
 
@@ -174,22 +198,22 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 14.0
-margin_top = -87.0
-margin_right = 164.0
-margin_bottom = -47.0
+offset_left = 14.0
+offset_top = -87.0
+offset_right = 164.0
+offset_bottom = -47.0
 
 [node name="Label" type="Label" parent="OptionsButton"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -65.0
-margin_top = -27.0
-margin_right = 77.0
-margin_bottom = 10.0
+offset_left = -65.0
+offset_top = -27.0
+offset_right = 77.0
+offset_bottom = 10.0
 mouse_default_cursor_shape = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "OPTIONS"
 
 [node name="BackButton" type="TextureButton" parent="." groups=["PuzzleUIButton"]]
@@ -197,24 +221,25 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 301.0
-margin_top = -96.0
-margin_right = 451.0
-margin_bottom = -56.0
+offset_left = 301.0
+offset_top = -96.0
+offset_right = 451.0
+offset_bottom = -56.0
 
 [node name="Label" type="Label" parent="BackButton"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -71.0
-margin_top = -18.5
-margin_right = 71.0
-margin_bottom = 18.5
+offset_left = -71.0
+offset_top = -18.5
+offset_right = 71.0
+offset_bottom = 18.5
 mouse_default_cursor_shape = 2
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "BACK"
 align = 1
 valign = 1
 
 [connection signal="button_down" from="TimedModeUI/StartButton" to="." method="_on_StartButton_button_down"]
+[connection signal="timeout" from="TimedModeUI/Timer" to="." method="_on_Timer_timeout"]

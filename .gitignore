@@ -8,6 +8,7 @@ android/
 *.log
 *.save
 *.keystore
+.godot/
 
 # Mono-specific ignores
 .mono/

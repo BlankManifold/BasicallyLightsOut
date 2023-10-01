@@ -3,13 +3,14 @@ using System;
 
 namespace UIs
 {
-    class PuzzleUI : MenusTemplate
+    partial class PuzzleUI : MenusTemplate
     {
-        public enum State { START, INSPECTING, TIMEDSOLVING, SOLVED, NORMALSOLVING }
+        public enum State { START, INSPECTING, TIMEDSOLVING, NORMALSOLVING, TIMEDSOLVED, NORMALSOLVED }
 
 
         private Label _movesLabel;
         private Label _timerLabel;
+        private Label _solvedLabel;
         private Control _normalModeUI;
         private Control _timedModeUI;
         private TextureButton _startButton;
@@ -19,7 +20,7 @@ namespace UIs
         private State _state;
 
         [Signal]
-        delegate void ChangeVisible(bool visible);
+        delegate void ChangeVisibleEventHandler(bool visible);
 
 
         public override void _Ready()
@@ -32,13 +33,14 @@ namespace UIs
 
             _movesLabel = _normalModeUI.GetNode<Label>("MovesLabel");
             _timerLabel = _timedModeUI.GetNode<Label>("TimerLabel");
+            _solvedLabel = _timedModeUI.GetNode<Label>("%SolvedLabel");
 
             _startButton = _timedModeUI.GetNode<TextureButton>("StartButton");
             _inspectionTimer = _timedModeUI.GetNode<Timer>("Timer");
             _inspectionTimer.WaitTime = _inspectionTime;
 
         }
-        public override void _Process(float delta)
+        public override void _Process(double delta)
         {
             switch (_state)
             {
@@ -87,6 +89,7 @@ namespace UIs
                 case State.START:
                     EmitSignal(nameof(ChangeVisible), false);
                     _timerLabel.Visible = false;
+                    _solvedLabel.Visible = false;
                     _inspectionTimer.WaitTime = _inspectionTime;
                     _startButton.Visible = true;
                     break;
@@ -104,6 +107,14 @@ namespace UIs
                     EmitSignal(nameof(ChangeVisible), true);
                     break;
 
+                case State.TIMEDSOLVED:
+                    EmitSignal(nameof(ChangeVisible), false);
+                    _timerLabel.Visible = false;
+                    _solvedLabel.Text = $"Solved in\n{_timerLabel.Text}";
+                    _solvedLabel.Visible = true;
+                    break;
+
+
                 default:
                     break;
             }
@@ -120,14 +131,11 @@ namespace UIs
 
         private void UpdateInspectionTimerLabel()
         {
-            float timeLeft = _inspectionTimer.TimeLeft;
+            double timeLeft = _inspectionTimer.TimeLeft;
             int secLeft = (int)timeLeft;
             _timerLabel.Text = secLeft.ToString();
         }
-        private void SetStartTime()
-        {
-            _startTime = OS.GetTicksMsec();
-        }
+        private void SetStartTime() => _startTime = OS.GetTicksMsec();
         private void UpdateTimerLabel()
         {
             float time = OS.GetTicksMsec() - _startTime;
@@ -147,14 +155,20 @@ namespace UIs
 
         public void _on_Puzzle_Solved()
         {
-            ActiveState(State.SOLVED);
+            switch (_state)
+            {
+                case State.TIMEDSOLVING:
+                    ActiveState(State.TIMEDSOLVED);
+                    break;
+                case State.NORMALSOLVING:
+                    ActiveState(State.NORMALSOLVED);
+                    break;
+            }
         }
         public void _on_Puzzle_ChangedMovesCounter(int moveCounter)
         {
             if (_state == State.INSPECTING && moveCounter == 1)
-            {
                 ActiveState(State.TIMEDSOLVING);
-            }
 
             _movesLabel.Text = moveCounter.ToString();
         }
@@ -165,5 +179,12 @@ namespace UIs
 
             EmitSignal(nameof(ChangeVisible), true);
         }
+        public void _on_Timer_timeout()
+        {
+            if (_state == State.INSPECTING)
+                ActiveState(State.TIMEDSOLVING);
+        }
+
+
     }
 }

@@ -4,7 +4,7 @@ using GArrayInt = Godot.Collections.Array<int>;
 namespace PuzzlePieces
 {
 
-    public class SequenceTypeA : Node2D
+    public partial class SequenceTypeA : Node2D
     {
         private string _code = "";
         public string Code { get { return _code; } set { _code = value; }}
@@ -20,20 +20,16 @@ namespace PuzzlePieces
         public int NumberOfSolvedPieces { get { return _numberOfSolvedPieces;} set { _numberOfSolvedPieces = value;} }
 
         [Signal]
-        delegate void Solved();
+        delegate void SolvedEventHandler();
         [Signal]
-        delegate void Moved();
+        delegate void MovedEventHandler();
         [Signal]
-        delegate void AddPiece(int id);
+        delegate void AddPieceEventHandler(int id);
 
 
 
         public override void _Ready()
         {
-            Managers.PuzzleManager puzzleManager = GetParent<Managers.PuzzleManager>();
-            Connect(nameof(Solved), puzzleManager, "_on_SequenceTypeA_Solved");
-            Connect(nameof(Moved), puzzleManager, "_on_SequenceTypeA_Moved");
-            Connect(nameof(AddPiece), puzzleManager, "_on_SequenceTypeA_AddPiece");
         }
 
 
@@ -141,7 +137,7 @@ namespace PuzzlePieces
 
 
 
-        public void _on_BasePiece_Flipping(int id, int colorId, bool isSetup)
+        public void OnBasePieceFlipping(int id, int colorId, bool isSetup)
         {
             _currentConfiguration[id] = colorId;
             _numberOfSolvedPieces += Globals.ColorManager.CheckColorChanging(colorId, _targetColorId);

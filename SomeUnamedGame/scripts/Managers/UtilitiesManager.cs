@@ -8,13 +8,13 @@ namespace Globals
     {
         A, B
     }
-
+    
     public enum Mode
     {
         NORMAL, TIMED
     }
 
-    static public class Paths
+    static public partial class Paths
     {
         public static readonly string BadConfig4x4path = "user://BadConfig/4x4/nosym.txt";
         public static readonly string PuzzleMenagerScenePath = "scenes/PuzzleManager.tscn";
@@ -35,7 +35,7 @@ namespace Globals
             return $"puzzleResource/{type}/p_{id}.tres";
         }
     }
-    static public class Utilities
+    static public partial class Utilities
     {
         static public int[] IdToCoords(int id, Vector2 frameDimensions)
         {
@@ -101,7 +101,7 @@ namespace Globals
         public static Random rnd = new Random();
     }
 
-    static public class SymmetriesManager
+    static public partial class SymmetriesManager
     {
         public static bool MainDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
         {
@@ -360,7 +360,7 @@ namespace Globals
         }
     }
 
-    static public class EntropyManager
+    static public partial class EntropyManager
     {
         public struct ResultArray
         {

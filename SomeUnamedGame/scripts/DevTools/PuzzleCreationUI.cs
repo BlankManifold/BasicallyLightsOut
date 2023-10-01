@@ -2,7 +2,7 @@ using Godot;
 
 namespace DevTools
 {
-    public class PuzzleCreationUI : Control
+    public partial class PuzzleCreationUI : Control
     {
         // private Label _statusLabel;
         // private Label _frameLabel;

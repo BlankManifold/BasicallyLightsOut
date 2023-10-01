@@ -3,7 +3,7 @@ using Godot;
 namespace PuzzlePieces
 {
 
-    public class BasePiece: Sprite, IFlippable
+    public partial class BasePiece: Sprite2D, IFlippable
     {
         public bool IsFlipped {get;} = false;
         public int ColorId {get; set;} = 0;
@@ -12,7 +12,7 @@ namespace PuzzlePieces
         public bool IsActive {get {return _active;} set {_active = value;}}
 
         [Signal]
-        delegate void Flipping(int id, int colorId, bool isSetup = false);
+        delegate void FlippingEventHandler(int id, int colorId, bool isSetup = false);
 
 
         public virtual void Init(int id, int colorId, Vector2 position, Vector2 _)
@@ -24,8 +24,7 @@ namespace PuzzlePieces
         public override void _Ready()
         {
             Modulate = Globals.ColorManager.Colors[ColorId];
-            SequenceTypeA sequence = GetParent<SequenceTypeA>();
-            Connect(nameof(Flipping), sequence, "_on_BasePiece_Flipping");
+            Flipping += GetParent<SequenceTypeA>().OnBasePieceFlipping;
         }
 
         

@@ -2,16 +2,21 @@ using Godot;
 
 namespace UIs
 {
-    public class TimedModeMenuUI : MenusTemplate
+    public partial class TimedModeMenuUI : MenusTemplate
     {
         public override void _Ready()
         {
             base._Ready();
 
-            string targetMethod = $"_on_{Name}_BackButton_down";
-            Godot.Object mainNode = (Godot.Object)GetTree().GetNodesInGroup("Main")[0];
+            Managers.MainManager mainNode = (Managers.MainManager)GetTree().GetNodesInGroup("Main")[0];
 
-            GetNode<TextureButton>("BackButton").Connect("button_down", mainNode, targetMethod);
+            string targetMethod = $"_on_{Name}_BackButton_down";
+            Callable targetCallable = new Callable(mainNode, targetMethod);
+            GetNode<TextureButton>("BackButton").ButtonDown += () => targetCallable.Call();
+            
+            targetMethod = $"_on_{Name}_StatsButton_down";
+            targetCallable = new Callable(mainNode, targetMethod);
+            GetNode<TextureButton>("StatsButton").ButtonDown += () => targetCallable.Call();
         }
 
     }

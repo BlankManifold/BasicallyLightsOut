@@ -2,7 +2,7 @@ using Godot;
 
 namespace UIs
 {
-    public class LevelSelectionButton : TextureButton
+    public partial class LevelSelectionButton : TextureButton
     {
         private Label _label;
 
@@ -17,7 +17,7 @@ namespace UIs
         }
         public void UpdateButtonSize(Vector2 size)
         {
-           RectSize = size;
+           Size = size;
         }
 
     }

@@ -2,7 +2,7 @@ using Godot;
 
 namespace Managers
 {
-    public class TimedModeManager : PuzzleManager
+    public partial class TimedModeManager : PuzzleManager
     {
         private delegate void ScrambleGeneratorDel(TimedModeManager timedPuzzle);
 
@@ -57,7 +57,7 @@ namespace Managers
 
                     position = _startPosition + j * shiftx + i * shifty;
 
-                    PuzzlePieces.BasePiece piece = _piecesScene.Instance<PuzzlePieces.BasePiece>();
+                    PuzzlePieces.BasePiece piece = _piecesScene.Instantiate<PuzzlePieces.BasePiece>();
                     piece.Init(id, colorId, position, _pieceExtents);
 
                     _sequence.UpdateNeighboursDict(id, GetNeighbours(id));

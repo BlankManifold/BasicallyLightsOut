@@ -3,9 +3,9 @@
 [ext_resource path="res://scripts/PuzzlePieces/Pieces/TypeA.cs" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 100, 100 )
+size = Vector2( 100, 100 )
 
-[node name="TypeA" type="Sprite"]
+[node name="TypeA" type="Sprite2D"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
@@ -17,15 +17,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -100.0
-margin_top = -100.0
-margin_right = 100.0
-margin_bottom = 100.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 mouse_filter = 2
 
 [node name="Area2D" type="Area2D" parent="."]
 
-[node name="Shape" type="CollisionShape2D" parent="Area2D"]
+[node name="Shape3D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
 [connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]

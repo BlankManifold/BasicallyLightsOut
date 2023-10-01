@@ -3,7 +3,7 @@ using Godot;
 
 namespace Globals
 {
-    static public class GridInfoManager
+    static public partial class GridInfoManager
     {
 
         static private Vector2 _viewportSize;
