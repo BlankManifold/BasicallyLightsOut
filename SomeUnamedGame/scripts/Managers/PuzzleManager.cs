@@ -51,9 +51,9 @@ namespace Managers
 
 
         [Signal]
-        delegate void ChangedMovesCounterEventHandler(int movesCounter);
+        public delegate void ChangedMovesCounterEventHandler(int movesCounter);
         [Signal]
-        delegate void SolvedEventHandler();
+        public delegate void SolvedEventHandler();
 
         public delegate Globals.EntropyManager.ResultArray convolutionMethod(GArrayInt A, int[] dims);
 

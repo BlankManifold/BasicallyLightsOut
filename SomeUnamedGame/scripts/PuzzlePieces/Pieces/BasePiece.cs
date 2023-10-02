@@ -12,7 +12,7 @@ namespace PuzzlePieces
         public bool IsActive {get {return _active;} set {_active = value;}}
 
         [Signal]
-        delegate void FlippingEventHandler(int id, int colorId, bool isSetup = false);
+        public delegate void FlippingEventHandler(int id, int colorId, bool isSetup = false);
 
 
         public virtual void Init(int id, int colorId, Vector2 position, Vector2 _)

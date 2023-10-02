@@ -21,15 +21,15 @@ namespace PuzzlePieces
         public override void _Ready()
         {
             base._Ready();
-            _shape = GetNode<CollisionShape2D>("Area2D/Shape3D");
-            RectangleShape2D rectangleShape2D = (RectangleShape2D)(_shape.Shape3D);
+            _shape = GetNode<CollisionShape2D>("%CollisionShape2D");
+            RectangleShape2D rectangleShape2D = (RectangleShape2D)_shape.Shape;
             rectangleShape2D.Size = _extents;
 
             ColorRect _rect = GetNode<ColorRect>("ColorRect");
             _rect.Size = 2 * _extents;
             _rect.Position = - _extents;
         }
-        public void _on_Area2D_input_event(object _, InputEvent @event, int __)
+        public void _on_area_2d_input_event(Node _, InputEvent @event, int __)
         {
             if (@event is InputEventMouseButton mousebutton && mousebutton.ButtonIndex == MouseButton.Left && mousebutton.IsPressed())
             {

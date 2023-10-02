@@ -1,18 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://ulhjmlm3ue16"]
 
-[ext_resource path="res://scripts/PuzzlePieces/Pieces/TypeA.cs" type="Script" id=1]
+[ext_resource type="Script" path="res://scripts/PuzzlePieces/Pieces/TypeA.cs" id="1"]
 
-[sub_resource type="RectangleShape2D" id=1]
-size = Vector2( 100, 100 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(100, 100)
 
 [node name="TypeA" type="Sprite2D"]
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
-_extents = Vector2( 50, 50 )
+script = ExtResource("1")
+_extents = Vector2(50, 50)
 
 [node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -25,7 +23,8 @@ mouse_filter = 2
 
 [node name="Area2D" type="Area2D" parent="."]
 
-[node name="Shape3D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+unique_name_in_owner = true
+shape = SubResource("1")
 
-[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

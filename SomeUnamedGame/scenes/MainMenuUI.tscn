@@ -1,40 +1,58 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://bbqxe3eyaxot2"]
 
-[ext_resource path="res://assets/Louis George Cafe Bold.ttf" type="FontFile" id=1]
-[ext_resource path="res://assets/temp.tres" type="FontFile" id=2]
-[ext_resource path="res://scripts/UIs/MenusTemplate.cs" type="Script" id=3]
+[ext_resource type="FontFile" uid="uid://kb103q4r2u6y" path="res://assets/Louis George Cafe Bold.ttf" id="1"]
+[ext_resource type="Script" path="res://scripts/UIs/MenusTemplate.cs" id="3"]
 
-[sub_resource type="FontFile" id=1]
-size = 100
-font_data = ExtResource( 1 )
+[sub_resource type="FontFile" id="1"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+fallbacks = Array[Font]([ExtResource("1"), ExtResource("1")])
+face_index = null
+embolden = null
+transform = null
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [node name="MainMenuUI" type="Control" groups=["menu"]]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="Title" type="TextureRect" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_top = 224.0
-offset_right = 20.0
-offset_bottom = 264.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 193.0
+grow_horizontal = 2
 
 [node name="Label" type="Label" parent="Title"]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -146.0
-offset_top = -56.5
-offset_right = 146.0
-offset_bottom = 56.5
-theme_override_fonts/font = SubResource( 1 )
-text = "Nome"
+offset_left = -22.0
+offset_top = -11.0
+offset_right = 22.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("1")
+text = "SOMEUNNAMEDGAME"
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -46,56 +64,17 @@ offset_bottom = 160.0
 mouse_filter = 2
 theme_override_constants/separation = 100
 
-[node name="NormalMode" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
-offset_right = 200.0
-offset_bottom = 40.0
-custom_minimum_size = Vector2( 200, 40 )
+[node name="NormalMode" type="Button" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+text = "NORMAL MODE"
 
-[node name="NormalModeLabel" type="Label" parent="ButtonsContainer/NormalMode"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -102.0
-offset_top = -18.5
-offset_right = 102.0
-offset_bottom = 18.5
-theme_override_fonts/font = ExtResource( 2 )
-text = "Normal mode"
+[node name="TimedMode" type="Button" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+text = "TIME MODE"
 
-[node name="TimedMode" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
-offset_top = 140.0
-offset_right = 200.0
-offset_bottom = 180.0
-custom_minimum_size = Vector2( 200, 40 )
-
-[node name="TimedModeLabel" type="Label" parent="ButtonsContainer/TimedMode"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -102.0
-offset_top = -18.5
-offset_right = 102.0
-offset_bottom = 18.5
-theme_override_fonts/font = ExtResource( 2 )
-text = "Timed mode"
-
-[node name="Options" type="TextureButton" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
-offset_top = 280.0
-offset_right = 200.0
-offset_bottom = 320.0
-custom_minimum_size = Vector2( 200, 40 )
-
-[node name="OptionLabel" type="Label" parent="ButtonsContainer/Options"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -103.0
-offset_top = -17.0
-offset_right = 101.0
-offset_bottom = 20.0
-theme_override_fonts/font = ExtResource( 2 )
-text = "Options"
-align = 1
+[node name="Options" type="Button" parent="ButtonsContainer" groups=["MainMenuUIButton"]]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+text = "OPTIONS"

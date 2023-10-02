@@ -10,13 +10,11 @@ namespace UIs
 
             Managers.MainManager mainNode = (Managers.MainManager)GetTree().GetNodesInGroup("Main")[0];
 
-            string targetMethod = $"_on_{Name}_BackButton_down";
-            Callable targetCallable = new Callable(mainNode, targetMethod);
-            GetNode<TextureButton>("BackButton").ButtonDown += () => targetCallable.Call();
+            Callable targetCallableBack = new Callable(mainNode, $"_on_{Name}_BackButton_down");
+            GetNode<Button>("BackButton").ButtonDown += () => targetCallableBack.Call();
             
-            targetMethod = $"_on_{Name}_StatsButton_down";
-            targetCallable = new Callable(mainNode, targetMethod);
-            GetNode<TextureButton>("StatsButton").ButtonDown += () => targetCallable.Call();
+            Callable targetCallableStats = new Callable(mainNode, $"_on_{Name}_StatsButton_down");
+            GetNode<Button>("StatsButton").ButtonDown += () => targetCallableStats.Call();
         }
 
     }

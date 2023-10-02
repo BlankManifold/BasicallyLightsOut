@@ -15,7 +15,7 @@ namespace UIs
             string targetMethod = $"_on_{Name}_UIButton_down";
             Managers.MainManager mainNode = (Managers.MainManager)GetTree().GetNodesInGroup("Main")[0];
             
-            foreach (TextureButton button in GetTree().GetNodesInGroup($"{Name}Button"))
+            foreach (BaseButton button in GetTree().GetNodesInGroup($"{Name}Button"))
             { 
                 Callable targetCallable = new Callable(mainNode, targetMethod);
                 button.ButtonDown += () => targetCallable.Call(new Variant[]{button.Name});

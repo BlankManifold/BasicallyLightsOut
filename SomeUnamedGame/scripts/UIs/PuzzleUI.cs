@@ -13,14 +13,14 @@ namespace UIs
         private Label _solvedLabel;
         private Control _normalModeUI;
         private Control _timedModeUI;
-        private TextureButton _startButton;
+        private Button _startButton;
         private Timer _inspectionTimer;
         private float _inspectionTime = 10.99f;
         private float _startTime;
         private State _state;
 
         [Signal]
-        delegate void ChangeVisibleEventHandler(bool visible);
+        public delegate void ChangeVisibleEventHandler(bool visible);
 
 
         public override void _Ready()
@@ -31,11 +31,11 @@ namespace UIs
             _normalModeUI = GetNode<Control>("NormalModeUI");
             _timedModeUI = GetNode<Control>("TimedModeUI");
 
-            _movesLabel = _normalModeUI.GetNode<Label>("MovesLabel");
-            _timerLabel = _timedModeUI.GetNode<Label>("TimerLabel");
+            _movesLabel = _normalModeUI.GetNode<Label>("%MovesLabel");
+            _timerLabel = _timedModeUI.GetNode<Label>("%TimerLabel");
             _solvedLabel = _timedModeUI.GetNode<Label>("%SolvedLabel");
 
-            _startButton = _timedModeUI.GetNode<TextureButton>("StartButton");
+            _startButton = _timedModeUI.GetNode<Button>("StartButton");
             _inspectionTimer = _timedModeUI.GetNode<Timer>("Timer");
             _inspectionTimer.WaitTime = _inspectionTime;
 
@@ -135,10 +135,10 @@ namespace UIs
             int secLeft = (int)timeLeft;
             _timerLabel.Text = secLeft.ToString();
         }
-        private void SetStartTime() => _startTime = OS.GetTicksMsec();
+        private void SetStartTime() => _startTime = Time.GetTicksMsec();
         private void UpdateTimerLabel()
         {
-            float time = OS.GetTicksMsec() - _startTime;
+            float time = Time.GetTicksMsec() - _startTime;
             float seconds = time / 1000;
 
             TimeSpan formatTime = TimeSpan.FromSeconds(seconds);

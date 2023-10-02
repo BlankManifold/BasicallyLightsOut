@@ -34,8 +34,8 @@ namespace Managers
             _normalModeMenu = GetNode<UIs.NormalModeMenuUI>("%NormalModeMenuUI");
             _timedModeMenu = GetNode<UIs.TimedModeMenuUI>("%TimedModeMenuUI");
 
-            _normalPuzzle = GetNode<NormalModeManager>("%NormalPuzzle"); ;
-            _timedPuzzle = GetNode<TimedModeManager>("%TimedPuzzle"); ;
+            _normalPuzzle = GetNode<NormalModeManager>("%NormalModeManager"); ;
+            _timedPuzzle = GetNode<TimedModeManager>("%TimedModeManager"); ;
             
             _puzzleUI.Visible = false;
             _normalModeMenu.Visible = false;
@@ -164,16 +164,14 @@ namespace Managers
 
 
 
-        // public void _on_AddBadConfig_button_down()
-        // {
-        //     string code = Globals.Utilities.CreateBinaryCode(_timedPuzzle.CurrentConfiguration);
-        //     File file = new File();
-
-        //     file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.ReadWrite);
-        //     file.SeekEnd();
-        //     file.StoreLine(code);
-        //     file.Close();
-        // }
+        public void _on_AddBadConfig_button_down()
+        {
+            string code = Globals.Utilities.CreateBinaryCode(_timedPuzzle.CurrentConfiguration);
+            FileAccess file = FileAccess.Open(Globals.Paths.BadConfig4x4path, FileAccess.ModeFlags.ReadWrite);
+            file.SeekEnd();
+            file.StoreLine(code);
+            file.Close();
+        }
     }
 
 }

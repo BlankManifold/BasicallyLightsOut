@@ -1,23 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://coqn4rcmo6l3"]
 
-[ext_resource path="res://scripts/UIs/NormalModeMenuUI.cs" type="Script" id=1]
-[ext_resource path="res://scenes/LevelSelectionButton.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/temp.tres" type="FontFile" id=3]
+[ext_resource type="Script" path="res://scripts/UIs/NormalModeMenuUI.cs" id="1"]
+[ext_resource type="PackedScene" uid="uid://hws8paebw7ak" path="res://scenes/LevelSelectionButton.tscn" id="2"]
 
 [node name="NormalModeMenuUI" type="Control" groups=["menu"]]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-script = ExtResource( 1 )
+script = ExtResource("1")
 _levelsTypeDict = {
 "easy": 3,
 "hard": 0,
 "medium": 0,
 "tutorial": 4
 }
-_levelsSelectionButtonScene = ExtResource( 2 )
+_levelsSelectionButtonScene = ExtResource("2")
 
-[node name="BackButton" type="TextureButton" parent="."]
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -26,18 +28,4 @@ offset_left = 348.0
 offset_top = -182.0
 offset_right = 414.0
 offset_bottom = -144.0
-
-[node name="Label" type="Label" parent="BackButton"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -36.0
-offset_top = -38.0
-offset_right = 36.0
-offset_bottom = 39.0
-theme_override_fonts/font = ExtResource( 3 )
-text = "Back
-"
-align = 1
-valign = 1
+text = "BACK"

@@ -13,7 +13,7 @@ namespace Managers
 
         public ScrambleManager()
         {
-            LoadBadConfig();
+            // LoadBadConfig();
         }
 
 
@@ -137,14 +137,13 @@ namespace Managers
         }
         private void LoadBadConfig()
         {
-            // File file = new File();
-            // file.Open(Globals.Paths.BadConfig4x4path, File.ModeFlags.Read);
-            // while (!file.EofReached())
-            // {
-            //     string line = file.GetLine();
-            //     _badConfig4x4Dict[line] = true;
-            // }
-            // file.Close();
+            FileAccess file = FileAccess.Open(Globals.Paths.BadConfig4x4path, FileAccess.ModeFlags.Read);
+            while (!file.EofReached())
+            {
+                string line = file.GetLine();
+                _badConfig4x4Dict[line] = true;
+            }
+            file.Close();
         }
         private bool IsBadConfig(int dim, string code)
         {

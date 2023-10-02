@@ -47,7 +47,7 @@ namespace UIs
 
             Managers.MainManager mainNode = (Managers.MainManager)GetTree().GetNodesInGroup("Main")[0];
             Callable targetCallable = new Callable(mainNode, targetMethod);
-            GetNode<TextureButton>("BackButton").ButtonDown += () => targetCallable.Call();
+            GetNode<Button>("BackButton").ButtonDown += () => targetCallable.Call();
         }
 
 

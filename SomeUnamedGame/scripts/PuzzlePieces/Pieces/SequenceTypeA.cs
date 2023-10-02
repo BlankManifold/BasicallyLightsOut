@@ -20,11 +20,11 @@ namespace PuzzlePieces
         public int NumberOfSolvedPieces { get { return _numberOfSolvedPieces;} set { _numberOfSolvedPieces = value;} }
 
         [Signal]
-        delegate void SolvedEventHandler();
+        public delegate void SolvedEventHandler();
         [Signal]
-        delegate void MovedEventHandler();
+        public delegate void MovedEventHandler();
         [Signal]
-        delegate void AddPieceEventHandler(int id);
+        public delegate void AddPieceEventHandler(int id);
 
 
 
