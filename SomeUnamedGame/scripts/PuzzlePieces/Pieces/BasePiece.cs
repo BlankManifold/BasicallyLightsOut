@@ -34,7 +34,7 @@ namespace PuzzlePieces
             Modulate = Globals.ColorManager.Flip(ref colorId);
             ColorId = colorId;
             
-            EmitSignal(nameof(Flipping), _id, ColorId, isSetup);
+            EmitSignal(SignalName.Flipping, _id, ColorId, isSetup);
 
             return;
         } 

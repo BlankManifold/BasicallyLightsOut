@@ -69,8 +69,6 @@ grow_vertical = 2
 [node name="TimedModeMenuUI" parent="MenuLayer" instance=ExtResource("7")]
 unique_name_in_owner = true
 visible = false
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="NormalModeMenuUI" parent="MenuLayer" instance=ExtResource("6")]
 unique_name_in_owner = true

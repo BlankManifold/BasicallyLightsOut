@@ -25,7 +25,7 @@ namespace Managers
             set
             {
                 _movesCounter = value;
-                EmitSignal(nameof(ChangedMovesCounter), _movesCounter);
+                EmitSignal(SignalName.ChangedMovesCounter, _movesCounter);
             }
         }
 
@@ -238,7 +238,7 @@ namespace Managers
         public void OnSequenceTypeASolved()
         {
             _sequence.NumberOfSolvedPieces = 0;
-            EmitSignal(nameof(Solved));
+            EmitSignal(SignalName.Solved);
         }
         public void OnSequenceTypeAMoved() => MovesCounter = MovesCounter + 1;
 

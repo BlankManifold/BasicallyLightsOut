@@ -129,7 +129,7 @@ namespace PuzzlePieces
             }
             else
             {
-                EmitSignal(nameof(AddPiece), id);
+                EmitSignal(SignalName.AddPiece, id);
                 return true;
             }
 
@@ -151,9 +151,9 @@ namespace PuzzlePieces
 
             if (!isSetup)
             {
-                EmitSignal(nameof(Moved));
+                EmitSignal(SignalName.Moved);
                 if (IsSolved())
-                    EmitSignal(nameof(Solved));
+                    EmitSignal(SignalName.Solved);
             }
         }
 

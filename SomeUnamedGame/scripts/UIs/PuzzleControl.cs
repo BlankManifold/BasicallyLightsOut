@@ -1,9 +1,12 @@
 using Godot;
 
-public partial class PuzzleControl : Control
+namespace UIs
 {
-    public void _on_PuzzleUI_ChangeVisible(bool visible)
+    public partial class PuzzleControl : Control
     {
-        Visible = visible;
+        public void OnPuzzleUIChangeVisible(bool visible)
+        {
+            Visible = visible;
+        }
     }
 }

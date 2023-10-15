@@ -9,6 +9,7 @@ namespace Managers
         // private bool _devToolsEnabled = false;
         private NormalModeManager _normalPuzzle;
         private TimedModeManager _timedPuzzle;
+        private UIs.PuzzleControl _puzzleControl;
         private UIs.PuzzleUI _puzzleUI;
         private UIs.OptionsUI _optionsUI;
         private UIs.NormalModeMenuUI _normalModeMenu;
@@ -26,6 +27,7 @@ namespace Managers
             GD.Randomize();
 
             Globals.GridInfoManager.InitAreaSize(GetViewport().GetVisibleRect().Size, new Vector3(50, 200, 100), new Vector2(1, 1));
+            _puzzleControl = GetNode<UIs.PuzzleControl>("%PuzzleControl");
             _puzzleUI = GetNode<UIs.PuzzleUI>("%PuzzleUI");
             _optionsUI = GetNode<UIs.OptionsUI>("%OptionsUI");
             _puzzleLayer = GetNode<CanvasLayer>("PuzzleLayer");
@@ -34,8 +36,14 @@ namespace Managers
             _normalModeMenu = GetNode<UIs.NormalModeMenuUI>("%NormalModeMenuUI");
             _timedModeMenu = GetNode<UIs.TimedModeMenuUI>("%TimedModeMenuUI");
 
-            _normalPuzzle = GetNode<NormalModeManager>("%NormalModeManager"); ;
-            _timedPuzzle = GetNode<TimedModeManager>("%TimedModeManager"); ;
+            _normalPuzzle = GetNode<NormalModeManager>("%NormalModeManager");
+            _timedPuzzle = GetNode<TimedModeManager>("%TimedModeManager");
+
+            _puzzleUI.ChangeVisible += _puzzleControl.OnPuzzleUIChangeVisible;
+            _normalPuzzle.ChangedMovesCounter += _puzzleUI.OnPuzzleChangedMovesCounter;
+            _timedPuzzle.ChangedMovesCounter += _puzzleUI.OnPuzzleChangedMovesCounter;
+            _normalPuzzle.Solved += _puzzleUI.OnPuzzleSolved;
+            _timedPuzzle.Solved += _puzzleUI.OnPuzzleSolved;
             
             _puzzleUI.Visible = false;
             _normalModeMenu.Visible = false;

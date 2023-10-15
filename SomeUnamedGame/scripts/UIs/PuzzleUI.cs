@@ -87,7 +87,7 @@ namespace UIs
             switch (state)
             {
                 case State.START:
-                    EmitSignal(nameof(ChangeVisible), false);
+                    EmitSignal(SignalName.ChangeVisible, false);
                     _timerLabel.Visible = false;
                     _solvedLabel.Visible = false;
                     _inspectionTimer.WaitTime = _inspectionTime;
@@ -104,11 +104,11 @@ namespace UIs
                     break;
 
                 case State.NORMALSOLVING:
-                    EmitSignal(nameof(ChangeVisible), true);
+                    EmitSignal(SignalName.ChangeVisible, true);
                     break;
 
                 case State.TIMEDSOLVED:
-                    EmitSignal(nameof(ChangeVisible), false);
+                    EmitSignal(SignalName.ChangeVisible, false);
                     _timerLabel.Visible = false;
                     _solvedLabel.Text = $"Solved in\n{_timerLabel.Text}";
                     _solvedLabel.Visible = true;
@@ -125,7 +125,7 @@ namespace UIs
             _timedModeUI.Visible = false;
             _normalModeUI.Visible = false;
             Visible = false;
-            EmitSignal(nameof(ChangeVisible), false);
+            EmitSignal(SignalName.ChangeVisible, false);
         }
 
 
@@ -153,7 +153,7 @@ namespace UIs
         }
 
 
-        public void _on_Puzzle_Solved()
+        public void OnPuzzleSolved()
         {
             switch (_state)
             {
@@ -165,7 +165,7 @@ namespace UIs
                     break;
             }
         }
-        public void _on_Puzzle_ChangedMovesCounter(int moveCounter)
+        public void OnPuzzleChangedMovesCounter(int moveCounter)
         {
             if (_state == State.INSPECTING && moveCounter == 1)
                 ActiveState(State.TIMEDSOLVING);
@@ -177,7 +177,7 @@ namespace UIs
             _inspectionTimer.Start();
             ActiveState(State.INSPECTING);
 
-            EmitSignal(nameof(ChangeVisible), true);
+            EmitSignal(SignalName.ChangeVisible, true);
         }
         public void _on_Timer_timeout()
         {
