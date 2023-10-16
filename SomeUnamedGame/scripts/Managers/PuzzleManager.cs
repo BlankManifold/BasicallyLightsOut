@@ -8,6 +8,7 @@ namespace Managers
 
     public partial class PuzzleManager : Node2D
     {
+        #region Members
         protected SequenceTypeA _sequence;
         protected PackedScene _piecesScene;
         protected int _targetColorId = 0;
@@ -48,17 +49,16 @@ namespace Managers
         public GArrayInt NullIds { get { return _nullIds; } }
 
         public GArrayInt CurrentConfiguration { get { return _sequence.CurrentConfiguration; }}
+        #endregion
 
-
+        #region Signals and delegates
         [Signal]
         public delegate void ChangedMovesCounterEventHandler(int movesCounter);
         [Signal]
         public delegate void SolvedEventHandler();
 
         public delegate Globals.EntropyManager.ResultArray convolutionMethod(GArrayInt A, int[] dims);
-
-
-
+        #endregion
 
 
         public override void _Ready()
@@ -75,6 +75,7 @@ namespace Managers
         }
 
 
+        #region Public puzzle main handler-methods
         public void InitPuzzle(Vector2 frameDimension, int targetColorId, GArrayInt scramble, GArrayInt nullIds, GArrayInt configuration = null)
         {
             GlobalPosition = Vector2.Zero;
@@ -82,8 +83,8 @@ namespace Managers
 
             _targetColorId = targetColorId;
             _frameDimensions = frameDimension;
-            _scramble = scramble != null ? scramble : new GArrayInt() { };
-            _nullIds = nullIds != null ? nullIds : new GArrayInt() { };
+            _scramble = scramble ?? new GArrayInt() { };
+            _nullIds = nullIds ?? new GArrayInt() { };
 
             AdjustPiecesSize();
 
@@ -118,11 +119,9 @@ namespace Managers
             _nullIds.Clear();
             _sequence.ClearAll();
         }
+        #endregion
 
-
-
-
-
+        #region Private and protected methods 
         private void AdjustPiecesSize()
         {
             int pieceExtents = Globals.GridInfoManager.GetMaxTypeAExtents(_frameDimensions, _separation);
@@ -192,7 +191,7 @@ namespace Managers
                         position = _startPosition + j * shiftx + i * shifty;
 
                         BasePiece piece = _piecesScene.Instantiate<BasePiece>();
-                        piece.Init(id, colorId, position, _pieceExtents);
+                        piece.Init(id, colorId, position, 2*_pieceExtents);
 
                         _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
                         _sequence.AddPieceToSequence(id, piece);
@@ -204,15 +203,10 @@ namespace Managers
                     id++;
                 }
             }
-        }
+        }       
+        #endregion
 
-
-
-
-
-
-
-
+        #region Public code and conv methods       
         public void SetBinaryCode(GArrayInt config) => _sequence.Code = Globals.Utilities.CreateBinaryCode(config);
         public string GetBinaryCode() => _sequence.Code;
         public void CreateConvolution(convolutionMethod method)
@@ -221,11 +215,9 @@ namespace Managers
             InitPuzzle(result.Dims, _targetColorId, null, null, result.Array);
             CreateSequence(false);
         }
+        #endregion
 
-
-
-
-
+        #region Events to signal
         public void OnSequenceTypeAAddPiece(int id)
         {
             Vector2 pos = Globals.GridInfoManager.FromIdToPos(id, _frameDimensions, _startPosition);
@@ -241,6 +233,6 @@ namespace Managers
             EmitSignal(SignalName.Solved);
         }
         public void OnSequenceTypeAMoved() => MovesCounter = MovesCounter + 1;
-
+        #endregion
     }
 }

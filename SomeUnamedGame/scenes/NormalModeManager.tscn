@@ -5,6 +5,6 @@
 
 [node name="NormalModeManager" instance=ExtResource("1_pmb02")]
 script = ExtResource("2_fvoes")
-_puzzleDataRes = null
+_puzzleRes = null
 _startConfiguration = null
 _nullIds = null

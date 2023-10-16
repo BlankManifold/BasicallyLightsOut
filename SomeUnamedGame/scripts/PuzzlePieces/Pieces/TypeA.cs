@@ -10,24 +10,24 @@ namespace PuzzlePieces
 
 
         [Export]
-        private Vector2 _extents = new Vector2(100, 100);
-        public Vector2 Size { get { return _extents; } }
+        private Vector2 _size = new Vector2(100, 100);
+        public Vector2 Size { get { return _size; } }
 
-        public override void Init(int id, int colorId, Vector2 position, Vector2 extents)
+        public override void Init(int id, int colorId, Vector2 position, Vector2 size)
         {
-            base.Init(id, colorId, position, extents);
-            _extents = extents;
+            base.Init(id, colorId, position, size);
+            _size = size;
         }
         public override void _Ready()
         {
             base._Ready();
             _shape = GetNode<CollisionShape2D>("%CollisionShape2D");
             RectangleShape2D rectangleShape2D = (RectangleShape2D)_shape.Shape;
-            rectangleShape2D.Size = _extents;
+            rectangleShape2D.Size = _size;
 
             ColorRect _rect = GetNode<ColorRect>("ColorRect");
-            _rect.Size = 2 * _extents;
-            _rect.Position = - _extents;
+            _rect.Size = _size;
+            _rect.Position = - _size/2;
         }
         public void _on_area_2d_input_event(Node _, InputEvent @event, int __)
         {

@@ -15,7 +15,7 @@ namespace PuzzlePieces
         public delegate void FlippingEventHandler(int id, int colorId, bool isSetup = false);
 
 
-        public virtual void Init(int id, int colorId, Vector2 position, Vector2 _)
+        public virtual void Init(int id, int colorId, Vector2 position, Vector2 __size)
         {
             _id = id;
             ColorId = colorId;

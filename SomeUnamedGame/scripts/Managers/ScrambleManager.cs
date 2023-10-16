@@ -121,7 +121,7 @@ namespace Managers
 
 
 
-        private void FromScrambleConfigToConfig(ref GArrayInt config, Vector2 frameDimensions, GArrayInt scrambleConfig)
+        private static void FromScrambleConfigToConfig(ref GArrayInt config, Vector2 frameDimensions, GArrayInt scrambleConfig)
         {
             for (int i = 0; i < config.Count; i++)
             {

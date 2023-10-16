@@ -1,5 +1,4 @@
 using Godot;
-using GArray = Godot.Collections.Array;
 using GArrayInt = Godot.Collections.Array<int>;
 
 namespace Managers
@@ -7,21 +6,25 @@ namespace Managers
     public partial class NormalModeManager : PuzzleManager
     {
         [Export]
-        private Resource _puzzleDataRes;
-        public Resource PuzzleDataRes { get { return _puzzleDataRes; } set { _puzzleDataRes = value; } }
+        private PuzzleDataRes _puzzleRes;
+        public PuzzleDataRes PuzzleRes
+        {
+            get { return _puzzleRes; }
+            set { _puzzleRes = value; }
+        }
 
         public override void _Ready()
         {
             base._Ready();
         }
 
-        public void InitPuzzle(Resource puzzleDataRes, int targetColorId = 0)
+        public void InitPuzzle(PuzzleDataRes puzzleRes, int targetColorId = 0)
         {
-            _puzzleDataRes = puzzleDataRes;
+            _puzzleRes = puzzleRes;
 
-            Vector2 frameDimensions = (Vector2)_puzzleDataRes.Get("FrameDimensions");
-            GArrayInt scramble = new GArrayInt((GArray)_puzzleDataRes.Get("Scramble")).Duplicate();
-            GArrayInt nullIds = new GArrayInt((GArray)_puzzleDataRes.Get("NullIds")).Duplicate();
+            Vector2 frameDimensions = _puzzleRes.FrameDimensions;
+            GArrayInt scramble = _puzzleRes.Scramble.Duplicate();
+            GArrayInt nullIds = _puzzleRes.NullIds.Duplicate();
 
             base.InitPuzzle(frameDimensions, targetColorId, scramble, nullIds, null);
         }

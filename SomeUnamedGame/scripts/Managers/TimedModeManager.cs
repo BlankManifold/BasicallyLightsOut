@@ -58,7 +58,7 @@ namespace Managers
                     position = _startPosition + j * shiftx + i * shifty;
 
                     PuzzlePieces.BasePiece piece = _piecesScene.Instantiate<PuzzlePieces.BasePiece>();
-                    piece.Init(id, colorId, position, _pieceExtents);
+                    piece.Init(id, colorId, position, 2*_pieceExtents);
 
                     _sequence.UpdateNeighboursDict(id, GetNeighbours(id));
                     _sequence.AddPieceToSequence(id, piece);

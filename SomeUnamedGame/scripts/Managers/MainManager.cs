@@ -139,7 +139,7 @@ namespace Managers
             string type = typeAndId[0];
             int id = typeAndId[1].ToInt();
 
-            Resource puzzleDataRes = ResourceLoader.Load(Globals.Paths.GetPuzzleDataResourcePath(type, id));
+            PuzzleDataRes puzzleDataRes = ResourceLoader.Load<PuzzleDataRes>(Globals.Paths.GetPuzzleDataResourcePath(type, id));
             _normalPuzzle.InitPuzzle(puzzleDataRes);
             _normalPuzzle.CreateSequence();
         }

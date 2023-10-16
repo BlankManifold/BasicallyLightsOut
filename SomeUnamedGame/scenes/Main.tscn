@@ -47,6 +47,7 @@ unique_name_in_owner = true
 
 [node name="NormalModeManager" parent="PuzzleLayer/PuzzleControl" instance=ExtResource("6_kr1fx")]
 unique_name_in_owner = true
+_puzzleRes = null
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1

@@ -1,10 +1,10 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b73lbdtei7fke"]
 
-[ext_resource path="res://scripts/DevTools/PuzzleData.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://scripts/DevTools/PuzzleDataRes.cs" id="1"]
 
 [resource]
-script = ExtResource( 1 )
+script = ExtResource("1")
 Id = 0
-FrameDimensions = Vector2( 3, 3 )
-Scramble = [ 0, 4, 8 ]
-NullIds = [  ]
+FrameDimensions = Vector2(3, 3)
+Scramble = [0, 4, 8]
+NullIds = []

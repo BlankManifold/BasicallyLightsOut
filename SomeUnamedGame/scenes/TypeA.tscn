@@ -7,7 +7,6 @@ size = Vector2(100, 100)
 
 [node name="TypeA" type="Sprite2D"]
 script = ExtResource("1")
-_extents = Vector2(50, 50)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 8

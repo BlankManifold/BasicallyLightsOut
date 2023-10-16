@@ -1,16 +1,16 @@
 using Godot;
 
-partial class PuzzleDataRes : Resource
+public partial class PuzzleDataRes : Resource
 {
 
     [Export]
-    int Id;
+    public int Id;
     [Export]
-    Vector2 FrameDimensions;
+    public Vector2 FrameDimensions;
     [Export]
-    Godot.Collections.Array<int> Scramble;
+    public Godot.Collections.Array<int> Scramble;
     [Export]
-    Godot.Collections.Array<int> NullIds;
+    public Godot.Collections.Array<int> NullIds;
     
     public PuzzleDataRes()
     {
