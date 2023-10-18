@@ -6,7 +6,7 @@ namespace Managers
     public partial class NormalModeManager : PuzzleManager
     {
         [Export]
-        private PuzzleDataRes _puzzleRes;
+        protected PuzzleDataRes _puzzleRes;
         public PuzzleDataRes PuzzleRes
         {
             get { return _puzzleRes; }

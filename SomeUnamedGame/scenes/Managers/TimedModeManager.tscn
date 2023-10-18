@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://to5qlmybaptd"]
 
-[ext_resource type="PackedScene" uid="uid://cbng88kwfspm6" path="res://scenes/PuzzleManager.tscn" id="1_avmxg"]
+[ext_resource type="PackedScene" uid="uid://cbng88kwfspm6" path="res://scenes/Managers/PuzzleManager.tscn" id="1_avmxg"]
 [ext_resource type="Script" path="res://scripts/Managers/TimedModeManager.cs" id="2_f2rct"]
 
 [node name="TimedModeManager" instance=ExtResource("1_avmxg")]

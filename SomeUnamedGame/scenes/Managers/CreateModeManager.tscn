@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://vhoa21n676m6"]
+
+[ext_resource type="PackedScene" uid="uid://ccb7xd5ofof7y" path="res://scenes/Managers/NormalModeManager.tscn" id="1_fu0xk"]
+[ext_resource type="Script" path="res://scripts/Managers/CreateModeManager.cs" id="1_ll58y"]
+
+[node name="CreateModeManager" instance=ExtResource("1_fu0xk")]
+script = ExtResource("1_ll58y")

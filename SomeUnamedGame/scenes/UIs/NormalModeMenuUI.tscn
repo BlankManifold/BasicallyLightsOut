@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://coqn4rcmo6l3"]
 
 [ext_resource type="Script" path="res://scripts/UIs/NormalModeMenuUI.cs" id="1"]
-[ext_resource type="PackedScene" uid="uid://hws8paebw7ak" path="res://scenes/LevelSelectionButton.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://hws8paebw7ak" path="res://scenes/UIs/LevelSelectionButton.tscn" id="2"]
 
 [node name="NormalModeMenuUI" type="Control" groups=["menu"]]
 layout_mode = 3

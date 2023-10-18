@@ -27,5 +27,12 @@ public partial class PuzzleDataRes : Resource
         Scramble = scramble;
         NullIds =  nullIds;
     }   
+    public void Init(int id, Vector2 frameDimensions, Godot.Collections.Array<int> scramble, Godot.Collections.Array<int> nullIds)
+    {
+        Id = id;
+        FrameDimensions = frameDimensions;
+        Scramble = scramble;
+        NullIds =  nullIds;
+    }   
 }
 

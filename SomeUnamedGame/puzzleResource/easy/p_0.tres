@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://b73lbdtei7fke"]
 
-[ext_resource type="Script" path="res://scripts/DevTools/PuzzleDataRes.cs" id="1"]
+[ext_resource type="Script" path="res://scripts/PuzzlePieces/Pieces/PuzzleDataRes.cs" id="1"]
 
 [resource]
 script = ExtResource("1")

@@ -11,14 +11,12 @@ namespace Globals
     
     public enum Mode
     {
-        NORMAL, TIMED
+        NORMAL, TIMED, CREATE
     }
 
     static public partial class Paths
     {
         public static readonly string BadConfig4x4path = "user://BadConfig/4x4/nosym.txt";
-        public static readonly string PuzzleMenagerScenePath = "scenes/PuzzleManager.tscn";
-        public static readonly string PuzzleCreationUIScenePath = "scenes/PuzzleCreationUI.tscn";
         public static readonly string SequenceTypeAScenePath = "scenes/SequenceTypeA.tscn";
         static public string GetPiecesScenePath(PiecesType type)
         {
@@ -103,7 +101,7 @@ namespace Globals
 
     static public partial class SymmetriesManager
     {
-        public static bool MainDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
+        public static bool MainDiagonalCheck(GArrayInt config, Vector2 dims, float cutoff = 0.75f)
         {
             int count = 0;
             int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
@@ -126,7 +124,7 @@ namespace Globals
             float symRatio = 2 * (float)count / numberOfPieces;
             return (symRatio >= cutoff);
         }
-        public static bool SecondaryDiagonalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
+        public static bool SecondaryDiagonalCheck(GArrayInt config, Vector2 dims, float cutoff = 0.75f)
         {
             int count = 0;
             int numberOfPieces = (int)(dims[0] * dims[1]) - (int)(dims[1]);
@@ -151,7 +149,7 @@ namespace Globals
             float symRatio = 2 * (float)count / numberOfPieces;
             return (symRatio >= cutoff);
         }
-        public static bool VerticalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
+        public static bool VerticalCheck(GArrayInt config, Vector2 dims, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -188,7 +186,7 @@ namespace Globals
             float symRatio = 2 * (float)count / numberOfPieces;
             return (symRatio >= cutoff);
         }
-        public static bool HorizontalCheck(Godot.Collections.Array<int> config, Vector2 dims, float cutoff = 0.75f)
+        public static bool HorizontalCheck(GArrayInt config, Vector2 dims, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -221,7 +219,7 @@ namespace Globals
             return (symRatio >= cutoff);
         }
 
-        public static bool MainDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
+        public static bool MainDiagonalCheckScramble(GArrayInt config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int count = 0;
 
@@ -256,7 +254,7 @@ namespace Globals
             float symRatio = (float)count / scrambleLenght;
             return (symRatio >= cutoff);
         }
-        public static bool SecondaryDiagonalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
+        public static bool SecondaryDiagonalCheckScramble(GArrayInt config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int count = 0;
 
@@ -291,7 +289,7 @@ namespace Globals
             float symRatio = (float)count / scrambleLenght;
             return (symRatio >= cutoff);
         }
-        public static bool VerticalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
+        public static bool VerticalCheckScramble(GArrayInt config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];
@@ -328,7 +326,7 @@ namespace Globals
             float symRatio = 2 * (float)count / scrambleLenght;
             return (symRatio >= cutoff);
         }
-        public static bool HorizontalCheckScramble(Godot.Collections.Array<int> config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
+        public static bool HorizontalCheckScramble(GArrayInt config, Vector2 dims, int scrambleLenght, float cutoff = 0.75f)
         {
             int rows = (int)dims[0];
             int cols = (int)dims[1];

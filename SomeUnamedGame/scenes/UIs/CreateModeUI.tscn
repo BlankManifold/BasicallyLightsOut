@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwpyhmbwbkwdm"]
+[gd_scene load_steps=6 format=3 uid="uid://dwpyhmbwbkwdm"]
 
-[ext_resource type="Script" path="res://scripts/DevTools/PuzzleCreationUI.cs" id="1"]
-[ext_resource type="Script" path="res://scripts/DevTools/PuzzleCreationManager.cs" id="2"]
+[ext_resource type="Script" path="res://scripts/UIs/CreateModeUI.cs" id="1"]
 [ext_resource type="FontFile" uid="uid://boulrpa1ajhnl" path="res://assets/temp.tres" id="3"]
 [ext_resource type="FontFile" uid="uid://kb103q4r2u6y" path="res://assets/Louis George Cafe Bold.ttf" id="5"]
 
@@ -28,17 +27,19 @@ cache/0/20/0/kerning_overrides/20/0 = Vector2(0, 0)
 [sub_resource type="Theme" id="2"]
 default_font = SubResource("1")
 
-[node name="PuzzleCreationUI" type="Control"]
+[node name="CreateModeUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -3.0
 offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1")
 
-[node name="RowsColsFields" type="HBoxContainer" parent="."]
+[node name="SpinBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 277.0
@@ -47,22 +48,35 @@ offset_bottom = 327.0
 scale = Vector2(1.5, 1.5)
 theme_override_constants/separation = 20
 
-[node name="RowsField" type="SpinBox" parent="RowsColsFields"]
-custom_minimum_size = Vector2(100, 50)
+[node name="RowsContainter" type="HBoxContainer" parent="SpinBoxContainer"]
 layout_mode = 2
-prefix = "rows"
 
-[node name="ColsField" type="SpinBox" parent="RowsColsFields"]
-custom_minimum_size = Vector2(100, 50)
+[node name="Label" type="Label" parent="SpinBoxContainer/RowsContainter"]
 layout_mode = 2
-prefix = "cols"
+text = "Rows"
+
+[node name="RowsSpinBox" type="SpinBox" parent="SpinBoxContainer/RowsContainter"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ColsContainter" type="HBoxContainer" parent="SpinBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SpinBoxContainer/ColsContainter"]
+layout_mode = 2
+text = "Cols"
+
+[node name="ColsSpinBox" type="SpinBox" parent="SpinBoxContainer/ColsContainter"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Buttons" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 485.0
-offset_top = 288.0
+offset_top = 296.0
 offset_right = 1046.0
-offset_bottom = 331.0
+offset_bottom = 339.0
 theme_override_constants/separation = 20
 alignment = 1
 
@@ -97,21 +111,23 @@ theme_override_fonts/font = ExtResource("3")
 text = "Load"
 
 [node name="StatusLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 22.0
 offset_top = 45.0
-offset_right = 215.0
-offset_bottom = 82.0
+offset_right = 118.0
+offset_bottom = 67.0
 scale = Vector2(1.5, 1.5)
 theme_override_fonts/font = ExtResource("3")
 text = "Status: PLAY"
 
 [node name="InfoLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
-offset_left = 761.0
-offset_top = 63.0
-offset_right = 873.0
-offset_bottom = 128.0
+offset_left = 689.0
+offset_top = 15.0
+offset_right = 824.0
+offset_bottom = 119.0
 scale = Vector2(2.5, 2.5)
 text = "D: enable/disable
 C: creation seq
@@ -119,43 +135,40 @@ P: play
 M: modify config"
 
 [node name="FrameLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 26.0
 offset_top = 114.0
-offset_right = 277.0
-offset_bottom = 151.0
+offset_right = 149.0
+offset_bottom = 136.0
 scale = Vector2(1.5, 1.5)
 theme_override_fonts/font = ExtResource("3")
 text = "FrameDim: (0,0)"
 
 [node name="ScrambleLabel" type="Label" parent="."]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 26.0
 offset_top = 186.0
-offset_right = 277.0
-offset_bottom = 223.0
+offset_right = 100.0
+offset_bottom = 208.0
 scale = Vector2(1.5, 1.5)
 theme_override_fonts/font = ExtResource("3")
 text = "Scramble:"
 
-[node name="PuzzleCreationManager" type="Node" parent="."]
-script = ExtResource("2")
-
 [node name="SaveDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
 position = Vector2i(0, 36)
 size = Vector2i(384, 157)
-visible = true
 theme = SubResource("2")
 show_hidden_files = true
 
 [node name="LoadDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
 position = Vector2i(0, 36)
 size = Vector2i(384, 157)
-visible = true
 theme = SubResource("2")
 show_hidden_files = true
 
-[connection signal="value_changed" from="RowsColsFields/RowsField" to="." method="_on_RowsField_value_changed"]
-[connection signal="value_changed" from="RowsColsFields/ColsField" to="." method="_on_ColsField_value_changed"]
 [connection signal="confirmed" from="SaveDialog" to="." method="_on_SaveDialog_confirmed"]
 [connection signal="confirmed" from="LoadDialog" to="." method="_on_LoadDialog_confirmed"]

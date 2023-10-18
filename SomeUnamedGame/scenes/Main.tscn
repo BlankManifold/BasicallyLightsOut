@@ -1,15 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3e3cblemq28m"]
+[gd_scene load_steps=13 format=3 uid="uid://b3e3cblemq28m"]
 
-[ext_resource type="PackedScene" uid="uid://bbqxe3eyaxot2" path="res://scenes/MainMenuUI.tscn" id="1"]
-[ext_resource type="PackedScene" uid="uid://0nslmgxr8h47" path="res://scenes/PuzzleUI.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bbqxe3eyaxot2" path="res://scenes/UIs/MainMenuUI.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://0nslmgxr8h47" path="res://scenes/UIs/PuzzleUI.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/UIs/PuzzleControl.cs" id="3"]
 [ext_resource type="Script" path="res://scripts/Managers/MainManager.cs" id="4"]
-[ext_resource type="PackedScene" uid="uid://vce7slnwsas3" path="res://scenes/OptionsUI.tscn" id="5"]
-[ext_resource type="PackedScene" uid="uid://to5qlmybaptd" path="res://scenes/TimedModeManager.tscn" id="5_57v1n"]
-[ext_resource type="PackedScene" uid="uid://coqn4rcmo6l3" path="res://scenes/NormalModeMenuUI.tscn" id="6"]
-[ext_resource type="PackedScene" uid="uid://ccb7xd5ofof7y" path="res://scenes/NormalModeManager.tscn" id="6_kr1fx"]
-[ext_resource type="PackedScene" uid="uid://bog8q204nsup6" path="res://scenes/TimedModeMenuUI.tscn" id="7"]
-[ext_resource type="PackedScene" uid="uid://ckxcybonoe7fe" path="res://scenes/StatsMenuUI.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://vce7slnwsas3" path="res://scenes/UIs/OptionsUI.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://to5qlmybaptd" path="res://scenes/Managers/TimedModeManager.tscn" id="5_57v1n"]
+[ext_resource type="PackedScene" uid="uid://coqn4rcmo6l3" path="res://scenes/UIs/NormalModeMenuUI.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://ccb7xd5ofof7y" path="res://scenes/Managers/NormalModeManager.tscn" id="6_kr1fx"]
+[ext_resource type="PackedScene" uid="uid://bog8q204nsup6" path="res://scenes/UIs/TimedModeMenuUI.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://vhoa21n676m6" path="res://scenes/Managers/CreateModeManager.tscn" id="7_dyag8"]
+[ext_resource type="PackedScene" uid="uid://ckxcybonoe7fe" path="res://scenes/UIs/StatsMenuUI.tscn" id="8"]
 
 [sub_resource type="Shortcut" id="2"]
 
@@ -47,7 +48,9 @@ unique_name_in_owner = true
 
 [node name="NormalModeManager" parent="PuzzleLayer/PuzzleControl" instance=ExtResource("6_kr1fx")]
 unique_name_in_owner = true
-_puzzleRes = null
+
+[node name="CreateModeManager" parent="PuzzleLayer/PuzzleControl" instance=ExtResource("7_dyag8")]
+unique_name_in_owner = true
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1

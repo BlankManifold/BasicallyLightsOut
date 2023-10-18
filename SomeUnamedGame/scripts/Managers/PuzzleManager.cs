@@ -64,11 +64,8 @@ namespace Managers
         public override void _Ready()
         {
             _piecesScene = ResourceLoader.Load<PackedScene>(Globals.Paths.GetPiecesScenePath(Globals.PiecesType.A));
-            PackedScene sequenceScene = ResourceLoader.Load<PackedScene>(Globals.Paths.SequenceTypeAScenePath);
-
-            _sequence = sequenceScene.Instantiate<SequenceTypeA>();
-            _sequence.Name = "SequenceTypeA";
-            AddChild(_sequence);
+            
+            _sequence = GetNode<SequenceTypeA>("%SequenceTypeA");
             _sequence.AddPiece += OnSequenceTypeAAddPiece;
             _sequence.Solved += OnSequenceTypeASolved;
             _sequence.Moved += OnSequenceTypeAMoved;
@@ -93,7 +90,7 @@ namespace Managers
             else
                 SetupStartConfiguration();
 
-            _sequence.InitSequence(this);
+            _sequence.InitSequence(_startConfiguration, _targetColorId);
         }
         public virtual void CreateSequence(bool fromScramble = true)
         {
@@ -113,7 +110,7 @@ namespace Managers
             _sequence.FillConfiguration();
             _sequence.Restart(_startConfiguration);
         }
-        public void ClearAll()
+        public virtual void ClearAll()
         {
             _scramble.Clear();
             _nullIds.Clear();

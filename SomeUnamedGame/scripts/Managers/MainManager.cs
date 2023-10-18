@@ -5,10 +5,9 @@ namespace Managers
 {
     partial class MainManager : Node2D
     {
-        // [Export]
-        // private bool _devToolsEnabled = false;
         private NormalModeManager _normalPuzzle;
         private TimedModeManager _timedPuzzle;
+        private CreateModeManager _createPuzzle;
         private UIs.PuzzleControl _puzzleControl;
         private UIs.PuzzleUI _puzzleUI;
         private UIs.OptionsUI _optionsUI;
@@ -17,7 +16,6 @@ namespace Managers
         private UIs.MenusTemplate _mainMenu;
         private UIs.MenusTemplate _statsMenu;
         private CanvasLayer _puzzleLayer;
-        //private Label _debugLabel;
         private Globals.Mode _mode;
 
 
@@ -38,6 +36,7 @@ namespace Managers
 
             _normalPuzzle = GetNode<NormalModeManager>("%NormalModeManager");
             _timedPuzzle = GetNode<TimedModeManager>("%TimedModeManager");
+            _createPuzzle = GetNode<CreateModeManager>("%CreateModeManager");
 
             _puzzleUI.ChangeVisible += _puzzleControl.OnPuzzleUIChangeVisible;
             _normalPuzzle.ChangedMovesCounter += _puzzleUI.OnPuzzleChangedMovesCounter;
@@ -49,19 +48,6 @@ namespace Managers
             _normalModeMenu.Visible = false;
             _timedModeMenu.Visible = false;
             _optionsUI.Visible = false;
-
-
-            // if (_devToolsEnabled)
-            // {
-            //     _debugLabel = new Label();
-            //     _puzzleLayer.AddChild(_debugLabel);
-            //     _debugLabel.RectScale = new Vector2(2, 2);
-            //     PackedScene puzzleCreationUIScene = ResourceLoader.Load<PackedScene>(Globals.Paths.PuzzleCreationUIScenePath);
-            //     DevTools.PuzzleCreationUI puzzleCreationUI = puzzleCreationUIScene.Instantiate<DevTools.PuzzleCreationUI>();
-            //     _puzzleLayer.AddChild(puzzleCreationUI);
-
-            //     puzzleCreationUI.GetNode<DevTools.PuzzleCreationManager>("PuzzleCreationManager").Init(_puzzleManager);
-            // }
         }
 
 
@@ -80,6 +66,11 @@ namespace Managers
                     _mode = Globals.Mode.TIMED;
                     _mainMenu.Visible = false;
                     _timedModeMenu.Visible = true;
+                    break;
+                case "CreateMode":
+                    _mode = Globals.Mode.CREATE;
+                    _mainMenu.Visible = false;
+                    
                     break;
 
                 case "Options":

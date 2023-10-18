@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ckxcybonoe7fe"]
 
 [ext_resource type="FontFile" uid="uid://boulrpa1ajhnl" path="res://assets/temp.tres" id="1"]
-[ext_resource type="PackedScene" uid="uid://b42vq4ukd01wn" path="res://scenes/StatsTabs.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://b42vq4ukd01wn" path="res://scenes/UIs/StatsTabs.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/UIs/StatsMenuUI.cs" id="3"]
 
 [sub_resource type="Theme" id="1"]

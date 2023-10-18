@@ -13,6 +13,8 @@ namespace PuzzlePieces
 
         [Signal]
         public delegate void FlippingEventHandler(int id, int colorId, bool isSetup = false);
+        [Signal]
+        public delegate void ReadyEventHandler(BasePiece basePiece);
 
 
         public virtual void Init(int id, int colorId, Vector2 position, Vector2 __size)
@@ -24,7 +26,6 @@ namespace PuzzlePieces
         public override void _Ready()
         {
             Modulate = Globals.ColorManager.Colors[ColorId];
-            Flipping += GetParent<SequenceTypeA>().OnBasePieceFlipping;
         }
 
         

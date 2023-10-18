@@ -6,6 +6,7 @@ namespace PuzzlePieces
 
     public partial class SequenceTypeA : Node2D
     {
+        #region Members 
         private string _code = "";
         public string Code { get { return _code; } set { _code = value; }}
         private int _numberOfPieces = 0;
@@ -18,33 +19,36 @@ namespace PuzzlePieces
         public GArrayInt CurrentConfiguration { get { return _currentConfiguration; }}
         private int _numberOfSolvedPieces = 0;
         public int NumberOfSolvedPieces { get { return _numberOfSolvedPieces;} set { _numberOfSolvedPieces = value;} }
+        #endregion
 
+        #region Signals and delegates
         [Signal]
         public delegate void SolvedEventHandler();
         [Signal]
         public delegate void MovedEventHandler();
         [Signal]
         public delegate void AddPieceEventHandler(int id);
-
+        #endregion
 
 
         public override void _Ready()
         {
+
         }
 
 
-
-        public void InitSequence(Managers.PuzzleManager puzzleManager)
+        #region Public methods
+        public void InitSequence(GArrayInt startConfiguration, int targetColorId)
         {
-            _numberOfPieces = puzzleManager.StartConfiguration.Count;
-            _targetColorId = puzzleManager.TargetColorId;
-            _code = Globals.Utilities.CreateBinaryCode(puzzleManager.StartConfiguration);
+            _numberOfPieces = startConfiguration.Count;
+            _targetColorId = targetColorId;
+            _code = Globals.Utilities.CreateBinaryCode(startConfiguration);
 
             _numberOfSolvedPieces = 0;
 
             _currentConfiguration.Resize(_numberOfPieces);
             for (int i = 0; i < _numberOfPieces; i++)
-                _currentConfiguration[i] = puzzleManager.StartConfiguration[i];
+                _currentConfiguration[i] = startConfiguration[i];
         }
         public void CreateFromScramble(GArrayInt scramble, ref GArrayInt startConfiguration)
         {
@@ -62,6 +66,7 @@ namespace PuzzlePieces
         public void AddPieceToSequence(int id, BasePiece piece)
         {
             AddChild(piece);
+            piece.Flipping += OnBasePieceFlipping;
             _piecesDict.Add(id, piece);
         }
         public void ClearAll()
@@ -94,11 +99,6 @@ namespace PuzzlePieces
             foreach (int id in _piecesDict.Keys)
                 _piecesDict[id].SetColor(colorId);
         }
-
-
-        private bool IsSolved() => (_numberOfPieces == _numberOfSolvedPieces);
-
-
         public GArrayInt CreateNullIds()
         {
             GArrayInt nullIds = new GArrayInt() { };
@@ -134,9 +134,17 @@ namespace PuzzlePieces
             }
 
         }
+        public void Flip(int id, bool isSetup = false) => _piecesDict[id].Flip(isSetup);
+        #endregion
+
+        #region Private Methods
+        private bool IsSolved() => (_numberOfPieces == _numberOfSolvedPieces);
+        #endregion
+
+        
 
 
-
+        #region Event to signals
         public void OnBasePieceFlipping(int id, int colorId, bool isSetup)
         {
             _currentConfiguration[id] = colorId;
@@ -156,6 +164,7 @@ namespace PuzzlePieces
                     EmitSignal(SignalName.Solved);
             }
         }
+        #endregion
 
     }
 }
